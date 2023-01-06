@@ -25,10 +25,10 @@
 						@method('PUT')
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="brand" class="col-sm-2 col-form-label">Merek</label>
+								<label for="brand_id" class="col-sm-2 col-form-label">Merek</label>
 								<div class="col-sm-10">
 									<select name="brand_id" id="brand_id" class="form-control is_select2 @error('brand_id') is-invalid @enderror">
-										<option value="">Pilih Merek</option>
+										<option disabled value="">Pilih Merek</option>
 										@foreach ($brands as $brand)
 											<option value="{{ $brand->id }}" @selected($brand->id === $product->brand_id)>{{ $brand->name }}</option>
 										@endforeach
@@ -51,14 +51,14 @@
 									@enderror
 								</div>
 								<div class="col">
-									<label for="color">Warna</label>
-									<select name="color" id="color" class="form-control is_select2 @error('color') is-invalid @enderror">
-										<option value="">Pilih Warna</option>
+									<label for="color_id">Warna</label>
+									<select name="color_id" id="color_id" class="form-control is_select2 @error('color_id') is-invalid @enderror">
+										<option disabled value="">Pilih Warna</option>
 										@foreach ($colors as $color)
-											<option value="{{ $color->id }}">{{ $color->name }}</option>
+											<option value="{{ $color->id }}" @selected($color->id === $product->color_id)>{{ $color->name }}</option>
 										@endforeach
 									</select>
-									@error('color')
+									@error('color_id')
 										<div class="invalid-feedback">
 											{{ $message }}
 										</div>
@@ -72,7 +72,7 @@
 										<div class="input-group-prepend">
 											<span class="input-group-text">Rp</span>
 										</div>
-										<input type="text" name="capital" class="form-control format-currency @error('capital') is-invalid @enderror" id="capital" placeholder="Modal Produk" value="{{ $product->capital }}" />
+										<input type="text" name="capital" class="form-control format-currency @error('capital') is-invalid @enderror" id="capital" placeholder="Modal Produk" value="{{ $product->capital }}" maxlength="10" />
 										@error('capital')
 											<div class="invalid-feedback">
 												{{ $message }}
@@ -88,7 +88,7 @@
 										<div class="input-group-prepend">
 											<span class="input-group-text">Rp</span>
 										</div>
-										<input type="text" name="price" class="form-control format-currency @error('price') is-invalid @enderror" id="price" placeholder="Harga Produk" value="{{ $product->price }}" />
+										<input type="text" name="price" class="form-control format-currency @error('price') is-invalid @enderror" id="price" placeholder="Harga Produk" value="{{ $product->price }}" maxlength="10" />
 										@error('price')
 											<div class="invalid-feedback">
 												{{ $message }}
@@ -101,7 +101,7 @@
 								<label for="size" class="col-sm-2 col-form-label">Ukuran</label>
 								<div class="col-sm-10">
 									<select name="size" id="size" class="form-control is_select2 @error('size') is-invalid @enderror">
-										<option value="">Pilih Ukuran</option>
+										<option disabled value="">Pilih Ukuran</option>
 										<option @selected($product->size === 'S') value="S">S</option>
 										<option @selected($product->size === 'M') value="M">M</option>
 										<option @selected($product->size === 'L') value="L">L</option>
@@ -126,7 +126,3 @@
 	</div>
 </section>
 @endsection
-@push('scripts')
-	<script>
-	</script>
-@endpush

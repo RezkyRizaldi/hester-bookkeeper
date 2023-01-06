@@ -12,10 +12,15 @@ class Product extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['brand_id', 'code', 'name', 'size', 'color', 'capital', 'price'];
+    protected $fillable = ['brand_id', 'color_id', 'code', 'name', 'size', 'color', 'capital', 'price'];
 
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    public function color(): BelongsTo
+    {
+        return $this->belongsTo(Color::class);
     }
 }

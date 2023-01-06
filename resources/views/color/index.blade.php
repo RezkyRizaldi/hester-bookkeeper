@@ -19,7 +19,7 @@
 							<a href="{{ route('colors.create') }}" class="btn btn-primary float-right"><i class="nav-icon fa fa-plus"></i>  Tambah Warna</a>
 						</div>
 						<div class="card-body">
-							<table class="table text-center table-bordered table-hover">
+							<table id="table" class="table text-center table-bordered table-hover">
 								<thead>
 									<tr>
 										<th>No.</th>
@@ -28,7 +28,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									@forelse ($colors as $color)
+									@foreach ($colors as $color)
 										<tr>
 											<td>{{ $loop->iteration }}</td>
 											<td>{{ $color->name }}</td>
@@ -52,11 +52,7 @@
 												</div>
 											</td>
 										</tr>
-                  @empty
-										<tr>
-											<td colspan="3" class="text-center">Data Tidak Ada</td>
-										</tr>
-									@endforelse
+									@endforeach
 								</tbody>
 							</table>
 						</div>
@@ -66,3 +62,14 @@
 		</div>
 	</section>
 @endsection
+@push('styles')
+	<link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css"></link>
+@endpush
+@push('scripts')
+	<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+	<script>
+		$(document).ready(() => {
+			$('#table').DataTable();
+		});
+	</script>
+@endpush

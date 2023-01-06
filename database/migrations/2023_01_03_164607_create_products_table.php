@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Brand;
+use App\Models\Color;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,11 +12,11 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("brand_id");
+            $table->foreignIdFor(Brand::class);
+            $table->foreignIdFor(Color::class);
             $table->string("code")->unique()->nullable();
             $table->string("name");
             $table->string("size", 5);
-            $table->string("color");
             $table->integer("capital");
             $table->integer("price");
             $table->softDeletes();

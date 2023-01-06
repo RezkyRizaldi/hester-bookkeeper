@@ -19,7 +19,7 @@
 							<a href="{{ route('products.create') }}" class="btn btn-primary float-right"><i class="nav-icon fa fa-plus"></i>  Tambah Produk</a>
 						</div>
 						<div class="card-body">
-							<table class="table text-center table-responsive table-bordered table-hover">
+							<table id="table" class="table text-center table-bordered table-hover">
 								<thead>
 									<tr>
 										<th>No.</th>
@@ -38,7 +38,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									@forelse ($products as $product)
+									@foreach ($products as $product)
 										<tr>
 											<td>{{ $loop->iteration }}</td>
 											<td>{{ $product->brand->name }}</td>
@@ -47,7 +47,7 @@
 											<td>Rp {{ number_format($product->capital) }}</td>
 											<td>Rp {{ number_format($product->price) }}</td>
 											<td>{{ $product->size }}</td>
-											<td>{{ $product->color }}</td>
+											<td>{{ $product->color->name }}</td>
 											<td>-</td>
 											<td>-</td>
 											<td>-</td>
@@ -72,14 +72,9 @@
 												</div>
 											</td>
 										</tr>
-                  @empty
-										<tr>
-											<td colspan="13" class="text-center">Data Tidak Ada</td>
-										</tr>
-									@endforelse
+									@endforeach
 								</tbody>
 							</table>
-              {{ $products->links() }}
 						</div>
 					</div>
 				</div>
@@ -87,3 +82,14 @@
 		</div>
 	</section>
 @endsection
+@push('styles')
+	<link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css"></link>
+@endpush
+@push('scripts')
+	<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+	<script>
+		$(document).ready(() => {
+			$('#table').DataTable();
+		});
+	</script>
+@endpush

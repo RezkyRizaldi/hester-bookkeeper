@@ -20,11 +20,11 @@ class ProductRequest extends FormRequest
     {
         return [
             'brand_id' => ['required', 'integer'],
+            'color_id' => ['required', 'integer'],
             'name' => ['required', 'max:255', 'string'],
             'capital' => ['required', 'string'],
             'price' => ['required', 'string'],
             'size' => ['required', 'max:5', 'string'],
-            'color' => ['required', 'max:255', 'string'],
         ];
     }
 
