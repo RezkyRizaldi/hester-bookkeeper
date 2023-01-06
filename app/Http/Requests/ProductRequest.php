@@ -24,7 +24,7 @@ class ProductRequest extends FormRequest
             'name' => ['required', 'max:255', 'string'],
             'capital' => ['required', 'string'],
             'price' => ['required', 'string'],
-            'size' => ['required', 'max:5', 'string'],
+            'size' => ['required'],
         ];
     }
 
@@ -33,6 +33,7 @@ class ProductRequest extends FormRequest
         $this->merge([
             'capital' => str_replace(',', '', $this->capital),
             'price' => str_replace(',', '', $this->price),
+            'size' => implode(',', $this->size),
         ]);
     }
 }

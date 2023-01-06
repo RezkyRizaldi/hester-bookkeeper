@@ -17,6 +17,7 @@ class ProductController extends Controller
     private $color;
     private $product;
     private $productService;
+    private $arrSize;
 
     public function __construct(ProductService $productService)
     {
@@ -24,12 +25,12 @@ class ProductController extends Controller
         $this->color = new Color();
         $this->product = new Product();
         $this->productService = $productService;
+        $this->arrSize        = ['S','M','L','XL'];
     }
 
     public function index(): View|Factory
     {
         $products = $this->product->with(['brand'])->latest()->get();
-
         return view('product.index', compact('products'));
     }
 
@@ -38,6 +39,7 @@ class ProductController extends Controller
         return view('product.create', [
             'brands' => $this->brand->all(),
             'colors' => $this->color->all(),
+            'sizes'  => $this->arrSize
         ]);
     }
 
@@ -49,9 +51,10 @@ class ProductController extends Controller
     public function edit(Product $product): View|Factory
     {
         return view('product.edit', [
-            'brands' => $this->brand->all(),
-            'colors' => $this->color->all(),
+            'brands'  => $this->brand->all(),
+            'colors'  => $this->color->all(),
             'product' => $product,
+            'sizes'   => $this->arrSize
         ]);
     }
 

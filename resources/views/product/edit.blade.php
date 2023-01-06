@@ -100,12 +100,11 @@
 							<div class="form-group row">
 								<label for="size" class="col-sm-2 col-form-label">Ukuran</label>
 								<div class="col-sm-10">
-									<select name="size" id="size" class="form-control is_select2 @error('size') is-invalid @enderror">
+									<select name="size[]" id="size" class="is_select2 @error('size') is-invalid @enderror" multiple="multiple" data-placeholder="Pilih Ukuran" style="width: 100%;">
 										<option disabled value="">Pilih Ukuran</option>
-										<option @selected($product->size === 'S') value="S">S</option>
-										<option @selected($product->size === 'M') value="M">M</option>
-										<option @selected($product->size === 'L') value="L">L</option>
-										<option @selected($product->size === 'XL') value="XL">XL</option>
+										@foreach ($sizes as $size)
+											<option @selected(in_array($size, $product->exists_size)) value="{{ $size }}">{{ $size }}</option>
+										@endforeach
 									</select>
 									@error('size')
 										<div class="invalid-feedback">

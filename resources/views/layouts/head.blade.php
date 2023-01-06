@@ -7,13 +7,25 @@
 	@stack('styles')
   <link rel="stylesheet" href="{{ asset('assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}" />
   <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}" />
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
   <style>
     .select2-container .select2-selection--single {
       height: 36px !important;
     }
-
+		.select2-container--default .select2-selection--multiple .select2-selection__choice {
+			background-color: #007bff;
+			border-color: #006fe6;
+			color: #fff;
+			padding: 0 10px;
+			margin-top: 0.31rem;
+		}
+		.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+				color: rgba(255,255,255,.7);
+				float: right;
+				margin-left: 5px;
+				margin-right: -2px;
+		}
     .hidden {
       display: none;
     }

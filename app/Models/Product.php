@@ -13,7 +13,12 @@ class Product extends Model
     use SoftDeletes;
 
     protected $fillable = ['brand_id', 'color_id', 'code', 'name', 'size', 'color', 'capital', 'price'];
-
+    protected $appends = [
+        'exists_size'
+    ];
+    public function getExistsSizeAttribute(){
+        return explode(',', $this->size);
+    }
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);

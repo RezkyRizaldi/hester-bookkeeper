@@ -99,12 +99,10 @@
 							<div class="form-group row">
 								<label for="size" class="col-sm-2 col-form-label">Ukuran</label>
 								<div class="col-sm-10">
-									<select name="size" id="size" class="form-control is_select2 @error('size') is-invalid @enderror">
-										<option selected disabled value="">Pilih Ukuran</option>
-										<option @selected(old('size') === "S") value="S">S</option>
-										<option @selected(old('size') === "M") value="M">M</option>
-										<option @selected(old('size') === "L") value="L">L</option>
-										<option @selected(old('size') === "XL") value="XL">XL</option>
+									<select name="size[]" id="size" class="is_select2 @error('size') is-invalid @enderror" multiple="multiple" data-placeholder="Pilih Ukuran" style="width: 100%;">
+										@foreach ($sizes as $size)
+											<option @selected(old('size') === $size) value="{{ $size }}">{{ $size }}</option>
+										@endforeach
 									</select>
 									@error('size')
 										<div class="invalid-feedback">
