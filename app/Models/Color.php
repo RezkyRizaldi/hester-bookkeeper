@@ -10,7 +10,18 @@ class Color extends Model
 {
     use HasFactory;
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = ['name'];
+
+    /**
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'created_at' => 'datetime:d-m-Y',
+        'updated_at' => 'datetime:d-m-Y',
+    ];
 
     public function products(): HasMany
     {

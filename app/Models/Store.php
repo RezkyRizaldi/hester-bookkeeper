@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Brand extends Model
+class Store extends Model
 {
     use HasFactory;
 
     /**
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'code'];
+    protected $fillable = ['name'];
 
     /**
      * @var array<string, string>
@@ -23,8 +23,8 @@ class Brand extends Model
         'updated_at' => 'datetime:d-m-Y',
     ];
 
-    public function products(): HasMany
+    public function income(): BelongsTo
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsTo(Income::class);
     }
 }

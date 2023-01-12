@@ -24,7 +24,8 @@ class ProductRequest extends FormRequest
             'name' => ['required', 'max:255', 'string'],
             'capital' => ['required', 'string'],
             'price' => ['required', 'string'],
-            'size' => ['required'],
+            'size' => ['required', 'string', 'max:255'],
+            'incoming.*' => ['required', 'integer'],
         ];
     }
 

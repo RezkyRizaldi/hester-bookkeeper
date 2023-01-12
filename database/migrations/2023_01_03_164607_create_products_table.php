@@ -14,11 +14,11 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->foreignIdFor(Brand::class);
             $table->foreignIdFor(Color::class);
-            $table->string("code")->unique()->nullable();
-            $table->string("name");
-            $table->string("size", 5);
-            $table->integer("capital");
-            $table->integer("price");
+            $table->string('code')->unique()->nullable();
+            $table->string('name');
+            $table->integer('capital');
+            $table->integer('price');
+            $table->string('size');
             $table->softDeletes();
             $table->timestamps();
         });

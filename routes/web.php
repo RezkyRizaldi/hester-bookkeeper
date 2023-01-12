@@ -17,5 +17,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', HomeController::class)->name('dashboard');
-Route::resource('products', ProductController::class)->except(['show']);
+Route::resource('products', ProductController::class);
 Route::resource('colors', ColorController::class)->except(['show']);

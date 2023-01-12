@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest;
 use App\Models\Brand;
 use App\Models\Color;
+use App\Models\Goods;
 use App\Models\Product;
 use App\Services\ProductService;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -15,22 +17,25 @@ class ProductController extends Controller
 {
     private $brand;
     private $color;
+    private $goods;
     private $product;
     private $productService;
-    private $arrSize;
+    private $sizes;
 
-    public function __construct(ProductService $productService)
+    public function __construct(Brand $brand, Color $color, Goods $goods, Product $product, ProductService $productService)
     {
-        $this->brand = new Brand();
-        $this->color = new Color();
-        $this->product = new Product();
+        $this->brand = $brand;
+        $this->color = $color;
+        $this->goods = $goods;
+        $this->product = $product;
         $this->productService = $productService;
-        $this->arrSize        = ['S','M','L','XL'];
+        $this->sizes = ['S', 'M', 'L', 'XL'];
     }
 
     public function index(): View|Factory
     {
-        $products = $this->product->with(['brand'])->latest()->get();
+        $products = $this->product->with(['brand', 'color'])->latest()->paginate(10);
+
         return view('product.index', compact('products'));
     }
 
@@ -39,7 +44,7 @@ class ProductController extends Controller
         return view('product.create', [
             'brands' => $this->brand->all(),
             'colors' => $this->color->all(),
-            'sizes'  => $this->arrSize
+            'sizes'  => $this->sizes,
         ]);
     }
 
@@ -48,13 +53,26 @@ class ProductController extends Controller
         return $this->productService->saveProduct($request);
     }
 
+    public function show(Product $product): View|Factory
+    {
+        $goods = $this->goods
+            ->withTrashed()
+            ->where('product_id', $product->id)
+            ->get()
+            ->groupBy(fn (Goods $query) => Carbon::parse($query->created_at)->format('F'));
+
+        return view('product.show', compact('goods'));
+    }
+
     public function edit(Product $product): View|Factory
     {
+        $product->load(['goods']);
+
         return view('product.edit', [
             'brands'  => $this->brand->all(),
             'colors'  => $this->color->all(),
             'product' => $product,
-            'sizes'   => $this->arrSize
+            'sizes'   => $this->sizes,
         ]);
     }
 
@@ -65,12 +83,6 @@ class ProductController extends Controller
 
     public function destroy(Product $product): RedirectResponse
     {
-        try {
-            $product->delete();
-
-            return redirect()->route('products.index')->with('success', 'Data derhasil dihapus!');
-        } catch (\Exception $e) {
-            return redirect()->route('products.index')->with('error', $e->getMessage());
-        }
+        return $this->productService->deleteProduct($product);
     }
 }
