@@ -36,7 +36,7 @@
 												<td>{{ $item->incoming }}</td>
 												<td>{{ $item->outgoing }}</td>
 												<td>{{ $item->stock }}</td>
-												<td>{{ $item->created_at }}</td>
+												<td>{{ $item->date }}</td>
 											</tr>
 										@endforeach
 									</tbody>

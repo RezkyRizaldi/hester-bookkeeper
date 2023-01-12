@@ -86,7 +86,7 @@
 						</div>
 						<div class="form-group col-md-4">
 							<label for="size">Ukuran</label>
-							<select name="size[]" id="size" class="is_select2 w-100 @error('size') is-invalid @enderror" multiple placeholder="Ukuran">
+							<select name="size[]" id="size" class="is_select2 w-100 @error('size') is-invalid @enderror" multiple data-placeholder="Ukuran">
 								@foreach ($sizes as $size)
 									<option @selected(old('size') === $size) value="{{ $size }}">{{ $size }}</option>
 								@endforeach
@@ -102,24 +102,21 @@
 						<div class="form-group col-md-4">
 							<label for="incoming">Barang Masuk</label>
 							<div class="d-flex flex-column" style="row-gap: 0.5rem;">
-								<input type="number" name="incoming[]" class="form-control @error('incoming.0') is-invalid @enderror" id="incoming1" placeholder="Barang Masuk" />
-							</div>
-							@error('incoming.0')
-								<div class="invalid-feedback">
-									{{ $message }}
+								<div>
+									<input type="number" name="incoming[]" class="form-control @error('incoming.0') is-invalid @enderror" id="incoming1" placeholder="Barang Masuk" aria-labelledby="incoming" />
+									@error('incoming.0')
+										<div class="invalid-feedback">
+											{{ $message }}
+										</div>
+									@enderror
 								</div>
-							@enderror
+							</div>
 						</div>
 						<div class="form-group col-md-4">
 							<label for="outgoing">Barang Keluar</label>
 							<div id="outgoingWrapper" class="d-flex flex-column" style="row-gap: 0.5rem;">
-								<input type="number" name="outgoing[]" class="form-control @error('outgoing.0') is-invalid @enderror" id="outgoing1" placeholder="Barang Keluar" />
+								<input type="number" name="outgoing[]" class="form-control" id="outgoing1" placeholder="Barang Keluar" aria-labelledby="outgoing" />
 							</div>
-							@error('outgoing.0')
-								<div class="invalid-feedback">
-									{{ $message }}
-								</div>
-							@enderror
 						</div>
 						<div class="form-group col-md-2">
 							<div class="d-flex" style="column-gap: 0.5rem; margin-top: 2rem">
@@ -144,6 +141,20 @@
 </section>
 @endsection
 
+@push('styles')
+	<style>
+		.is-invalid + .select2-container--default .select2-selection--single,
+		.is-invalid + .select2-container--default .select2-selection--multiple {
+			border: 1px solid #dc3545;
+			padding-right: 2.25rem !important;
+    	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    	background-repeat: no-repeat;
+    	background-position: right calc(0.375em + 0.1875rem) center;
+    	background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+		}
+	</style>
+@endpush
+
 @push('scripts')
 	<script type="text/javascript">
 		function init() {
@@ -160,8 +171,8 @@
 
 		$('#addInputBtn').on('click', () => {
 			let totalInput = parseInt($('#totalInput').val());
-			const incomingInput = `<input type="number" name="incoming[]" class="form-control @error('incoming.${totalInput}') is-invalid @enderror" id="incoming${totalInput + 1}" aria-labeledby="incoming" placeholder="Barang Keluar" value="{{ old('incoming.${totalInput}') }}" />`;
-			const outgoingInput = `<input type="number" name="outgoing[]" class="form-control @error('outgoing.${totalInput}') is-invalid @enderror" id="outgoing${totalInput + 1}" aria-labeledby="outgoing" placeholder="Barang Keluar" value="{{ old('outgoing.${totalInput}') }}" />`;
+			const incomingInput = `<input type="number" name="incoming[]" class="form-control @error('incoming.${totalInput}') is-invalid @enderror" id="incoming${totalInput + 1}" aria-labelledby="incoming" placeholder="Barang Keluar" value="{{ old('incoming.${totalInput}') }}" />`;
+			const outgoingInput = `<input type="number" name="outgoing[]" class="form-control" id="outgoing${totalInput + 1}" aria-labelledby="outgoing" placeholder="Barang Keluar" value="{{ old('outgoing.${totalInput}') }}" />`;
 
 			$(incomingInput).insertAfter(`#incoming${totalInput}`);
 			$(outgoingInput).insertAfter(`#outgoing${totalInput}`);

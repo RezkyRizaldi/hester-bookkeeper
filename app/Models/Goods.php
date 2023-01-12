@@ -36,7 +36,7 @@ class Goods extends Model
     protected function date(): Attribute
     {
         return new Attribute(
-            get: fn () => Carbon::parse($this->created_at)->format('l, d F Y'),
+            get: fn () => Carbon::parse($this->created_at)->translatedFormat('l, d F Y'),
         );
     }
 

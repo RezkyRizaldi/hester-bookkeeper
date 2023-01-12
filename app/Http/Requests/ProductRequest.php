@@ -25,7 +25,21 @@ class ProductRequest extends FormRequest
             'capital' => ['required', 'string'],
             'price' => ['required', 'string'],
             'size' => ['required', 'string', 'max:255'],
-            'incoming.*' => ['required', 'integer'],
+            'incoming.*' => ['required', 'integer', 'gte:outgoing'],
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'brand_id' => 'brand',
+            'color_id' => 'color',
+            'incoming.*' => 'incoming',
         ];
     }
 
@@ -34,7 +48,7 @@ class ProductRequest extends FormRequest
         $this->merge([
             'capital' => str_replace(',', '', $this->capital),
             'price' => str_replace(',', '', $this->price),
-            'size' => implode(',', $this->size),
+            // 'size' => implode(',', $this->size),
         ]);
     }
 }

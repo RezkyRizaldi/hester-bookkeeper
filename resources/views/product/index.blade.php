@@ -19,12 +19,12 @@
 								<thead>
 									<tr>
 										<th>No.</th>
-										<th>Brand</th>
+										<th>Merek</th>
 										<th>Kode Produk</th>
 										<th>Nama Produk</th>
 										<th>Modal</th>
 										<th>Harga</th>
-										<th>Size</th>
+										<th>Ukuran</th>
 										<th>Warna</th>
 										<th>Aksi</th>
 									</tr>

@@ -59,7 +59,7 @@ class ProductController extends Controller
             ->withTrashed()
             ->where('product_id', $product->id)
             ->get()
-            ->groupBy(fn (Goods $query) => Carbon::parse($query->created_at)->format('F'));
+            ->groupBy(fn (Goods $query) => Carbon::parse($query->created_at)->translatedFormat('F'));
 
         return view('product.show', compact('goods'));
     }
