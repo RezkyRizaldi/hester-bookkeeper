@@ -50,14 +50,14 @@ class Product extends Model
         return $this->belongsTo(Color::class);
     }
 
-    public function income(): BelongsTo
+    public function incomes(): HasMany
     {
-        return $this->belongsTo(Income::class);
+        return $this->hasMany(Income::class);
     }
 
-    public function expenditure(): BelongsTo
+    public function expenditures(): HasMany
     {
-        return $this->belongsTo(Expenditure::class);
+        return $this->hasMany(Expenditure::class);
     }
 
     public function goods(): HasMany

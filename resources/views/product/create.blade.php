@@ -18,7 +18,7 @@
 							<select name="brand_id" id="brand_id" class="form-control is_select2 @error('brand_id') is-invalid @enderror">
 								<option selected disabled value="">Pilih Merek</option>
 								@foreach ($brands as $brand)
-									<option value="{{ $brand->id }}" @selected(old('brand_id') == $brand->id)>{{ $brand->name }}</option>
+									<option value="{{ $brand->id }}" @selected(old('brand_id') === $brand->id)>{{ $brand->name }}</option>
 								@endforeach
 							</select>
 							@error('brand_id')
@@ -43,7 +43,7 @@
 									<select name="color_id" id="color_id" class="form-control is_select2 @error('color_id') is-invalid @enderror">
 										<option selected disabled value="">Pilih Warna</option>
 										@foreach ($colors as $color)
-											<option value="{{ $color->id }}" @selected(old('color_id') == $color->id)>{{ $color->name }}</option>
+											<option value="{{ $color->id }}" @selected(old('color_id') === $color->id)>{{ $color->name }}</option>
 										@endforeach
 									</select>
 									@error('color_id')
@@ -102,7 +102,7 @@
 						<div class="form-group col-md-4">
 							<label for="incoming">Barang Masuk</label>
 							<div class="d-flex flex-column" style="{{ $errors->has('incoming.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
-								<input type="number" name="incoming[]" class="form-control @error('incoming.0') is-invalid @enderror" id="incoming1" placeholder="Barang Masuk" aria-labelledby="incoming" value="{{ old('incoming.0') }}" />
+								<input type="number" name="incoming[]" class="form-control @error('incoming.0') is-invalid @enderror" id="incoming1" placeholder="Barang Masuk" aria-labelledby="incoming" value="{{ old('incoming.0') }}" min="1" />
 								@error('incoming.0')
 									<div class="invalid-feedback mt-0">
 										{{ $message }}
@@ -112,8 +112,13 @@
 						</div>
 						<div class="form-group col-md-4">
 							<label for="outgoing">Barang Keluar</label>
-							<div id="outgoingWrapper" class="d-flex flex-column" style="row-gap: 0.5rem;">
-								<input type="number" name="outgoing[]" class="form-control" id="outgoing1" placeholder="Barang Keluar" aria-labelledby="outgoing" value="{{ old('outgoing.0') }}" />
+							<div id="outgoingWrapper" class="d-flex flex-column" style="{{ $errors->has('outgoing.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
+								<input type="number" name="outgoing[]" class="form-control @error('outgoing.0') is-invalid @enderror" id="outgoing1" placeholder="Barang Keluar" aria-labelledby="outgoing" value="{{ old('outgoing.0') ?? 0 }}" min="0" />
+								@error('outgoing.0')
+									<div class="invalid-feedback mt-0">
+										{{ $message }}
+									</div>
+								@enderror
 							</div>
 						</div>
 						<div class="form-group col-md-2">
@@ -159,7 +164,7 @@
 			$(`#outgoingWrapper input`).each(function (i) {
 				$(this).on('keyup', function () {
 					if (parseInt($(this).val()) > parseInt($(`#incoming${i + 1}`).val())) {
-						$(this).val(parseInt($(this).val()));
+						$(this).val(parseInt($(`#incoming${i + 1}`).val()));
 					}
 				});
 			});
@@ -169,8 +174,8 @@
 
 		$('#addInputBtn').on('click', () => {
 			let totalInput = parseInt($('#totalInput').val());
-			const incomingInput = `<input type="number" name="incoming[]" class="form-control @error('incoming.${totalInput}') is-invalid @enderror" id="incoming${totalInput + 1}" aria-labelledby="incoming" placeholder="Barang Keluar" value="{{ old('incoming.${totalInput}') }}" />`;
-			const outgoingInput = `<input type="number" name="outgoing[]" class="form-control" id="outgoing${totalInput + 1}" aria-labelledby="outgoing" placeholder="Barang Keluar" value="{{ old('outgoing.${totalInput}') }}" />`;
+			const incomingInput = `<input type="number" name="incoming[]" class="form-control @error('incoming.${totalInput}') is-invalid @enderror" id="incoming${totalInput + 1}" aria-labelledby="incoming" placeholder="Barang Keluar" value="{{ old('incoming.${totalInput}') }}" min="1" />`;
+			const outgoingInput = `<input type="number" name="outgoing[]" class="form-control @error('outgoing.${totalInput}') is-invalid @enderror" id="outgoing${totalInput + 1}" aria-labelledby="outgoing" placeholder="Barang Keluar" value="{{ old('outgoing.${totalInput}') ?? 0 }}" min="0" />`;
 
 			$(incomingInput).insertAfter(`#incoming${totalInput}`);
 			$(outgoingInput).insertAfter(`#outgoing${totalInput}`);

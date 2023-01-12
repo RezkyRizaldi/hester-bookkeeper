@@ -20,6 +20,7 @@ class ProductRequest extends FormRequest
     {
         foreach ($this->incoming as $key => $value) {
             $incoming["incoming.{$key}"] = ['required', 'integer', "gte:outgoing.{$key}"];
+            $outgoing["outgoing.{$key}"] = ['required', 'integer', "lte:incoming.{$key}"];
         }
 
         return array_merge([
@@ -29,7 +30,7 @@ class ProductRequest extends FormRequest
             'capital' => ['required', 'string', 'max:255'],
             'price' => ['required', 'string', 'max:255'],
             'size' => ['required', 'string', 'max:255'],
-        ], $incoming);
+        ], $incoming, $outgoing);
     }
 
     /**
@@ -41,12 +42,13 @@ class ProductRequest extends FormRequest
     {
         foreach ($this->incoming as $key => $value) {
             $incoming["incoming.{$key}"] = 'incoming';
+            $outgoing["outgoing.{$key}"] = 'outgoing';
         }
 
         return array_merge([
             'brand_id' => 'brand',
             'color_id' => 'color',
-        ], $incoming);
+        ], $incoming, $outgoing);
     }
 
     protected function prepareForValidation(): void

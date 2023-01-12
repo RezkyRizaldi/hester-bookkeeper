@@ -16,7 +16,7 @@ class ProductService
         DB::beginTransaction();
 
         try {
-            $data = $request->all();
+            $data = $request->validated();
             $exists_product = Product::withTrashed()->where('brand_id', $data['brand_id'])->latest()->first();
             $brand = Brand::find($data['brand_id']);
 

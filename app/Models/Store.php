@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Store extends Model
 {
@@ -23,8 +23,8 @@ class Store extends Model
         'updated_at' => 'datetime:d-m-Y',
     ];
 
-    public function income(): BelongsTo
+    public function incomes(): HasMany
     {
-        return $this->belongsTo(Income::class);
+        return $this->hasMany(Income::class);
     }
 }

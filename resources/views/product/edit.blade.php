@@ -105,7 +105,7 @@
 							<label for="incoming">Barang Masuk</label>
 							<div class="d-flex flex-column" style="{{ $errors->has('incoming.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
 								@foreach ($product->goods as $key => $goods)
-									<input type="number" name="incoming[]" class="form-control @error("incoming.{$key}") is-invalid @enderror" id="{{ "incoming{$loop->iteration}" }}" placeholder="Barang Masuk" value="{{ $goods->incoming }}" />
+									<input type="number" name="incoming[]" class="form-control @error("incoming.{$key}") is-invalid @enderror" id="{{ "incoming{$loop->iteration}" }}" placeholder="Barang Masuk" value="{{ $goods->incoming }}" min="1" />
 									@error("incoming.{$key}")
 										<div class="invalid-feedback mt-0">
 											{{ $message }}
@@ -116,9 +116,14 @@
 						</div>
 						<div class="form-group col-md-4">
 							<label for="outgoing">Barang Keluar</label>
-							<div id="outgoingWrapper" class="d-flex flex-column" style="row-gap: 0.5rem;">
+							<div id="outgoingWrapper" class="d-flex flex-column" style="{{ $errors->has('outgoing.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
 								@foreach ($product->goods as $key => $goods)
-									<input type="number" name="outgoing[]" class="form-control" id="{{ "outgoing{$loop->iteration}" }}" placeholder="Barang Keluar" value="{{ $goods->outgoing }}" />
+									<input type="number" name="outgoing[]" class="form-control @error("outgoing.{$key}") is-invalid @enderror" id="{{ "outgoing{$loop->iteration}" }}" placeholder="Barang Keluar" value="{{ $goods->outgoing }}" min="0" />
+									@error("outgoing.{$key}")
+										<div class="invalid-feedback mt-0">
+											{{ $message }}
+										</div>
+									@enderror
 								@endforeach
 							</div>
 						</div>
@@ -165,7 +170,7 @@
 			$(`#outgoingWrapper input`).each(function (i) {
 				$(this).on('keyup', function () {
 					if (parseInt($(this).val()) > parseInt($(`#incoming${i + 1}`).val())) {
-						$(this).val(parseInt($(this).val()));
+						$(this).val(parseInt($(`#incoming${i + 1}`).val()));
 					}
 				});
 			});
@@ -175,8 +180,8 @@
 
 		$('#addInputBtn').on('click', () => {
 			let totalInput = parseInt($('#totalInput').val());
-			const incomingInput = `<input type="number" name="incoming[]" class="form-control @error('incoming.${totalInput}') is-invalid @enderror" id="incoming${totalInput + 1}" aria-labeledby="incoming" placeholder="Barang Keluar" value="{{ old('incoming.${totalInput}') }}" />`;
-			const outgoingInput = `<input type="number" name="outgoing[]" class="form-control id="outgoing${totalInput + 1}" aria-labeledby="outgoing" placeholder="Barang Keluar" value="{{ old('outgoing.${totalInput}') }}" />`;
+			const incomingInput = `<input type="number" name="incoming[]" class="form-control @error('incoming.${totalInput}') is-invalid @enderror" id="incoming${totalInput + 1}" aria-labeledby="incoming" placeholder="Barang Keluar" value="{{ old('incoming.${totalInput}') }}" min="1" />`;
+			const outgoingInput = `<input type="number" name="outgoing[]" class="form-control @error('outgoing.${totalInput}') is-invalid @enderror" id="outgoing${totalInput + 1}" aria-labeledby="outgoing" placeholder="Barang Keluar" value="{{ old('outgoing.${totalInput}') ?? 0 }}" min="0" />`;
 
 			$(incomingInput).insertAfter(`#incoming${totalInput}`);
 			$(outgoingInput).insertAfter(`#outgoing${totalInput}`);

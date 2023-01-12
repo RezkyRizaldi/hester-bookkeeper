@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\ExpenditureController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,5 +21,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', HomeController::class)->name('dashboard');
+Route::get('/brands', BrandController::class)->name('brand');
+Route::get('/stores', StoreController::class)->name('store');
 Route::resource('products', ProductController::class);
 Route::resource('colors', ColorController::class)->except(['show']);
+Route::resource('incomes', IncomeController::class)->except(['show']);
+Route::resource('expenditures', ExpenditureController::class)->except(['show']);

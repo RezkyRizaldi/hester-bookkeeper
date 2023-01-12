@@ -13,37 +13,30 @@ class DatabaseSeeder extends Seeder
             [
                 'name'  => 'Hester',
                 'code'  => 'H',
-                'created_at' => date('Y-m-d H:i:s'),
-
+                'created_at' => now(),
             ],
             [
                 'name'  => 'Heavy Breathing',
                 'code'  => 'HB',
-                'created_at' => date('Y-m-d H:i:s'),
+                'created_at' => now(),
             ],
         ];
         $colors = [
-            [
-                'name' => 'Hitam'
-            ],
-            [
-                'name' => 'Putih'
-            ],
-            [
-                'name' => 'Biru'
-            ],
-            [
-                'name' => 'Merah'
-            ],
-            [
-                'name' => 'Hijau'
-            ],
-            [
-                'name' => 'Kuning'
-            ],
+            ['name' => 'Hitam'],
+            ['name' => 'Putih'],
+            ['name' => 'Biru'],
+            ['name' => 'Merah'],
+            ['name' => 'Hijau'],
+            ['name' => 'Kuning'],
+        ];
+        $stores = [
+            ['name' => 'LAZADA'],
+            ['name' => 'Shopee'],
+            ['name' => 'TikTok'],
         ];
 
         DB::table('brands')->insert($brands);
         DB::table('colors')->insert($colors);
+        DB::table('stores')->insert($stores);
     }
 }

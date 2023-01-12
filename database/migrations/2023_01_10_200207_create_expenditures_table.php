@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('type');
             $table->integer('amount');
             $table->integer('price');
-            $table->date('date');
+            $table->date('date')->default(now());
             $table->softDeletes();
             $table->timestamps();
         });

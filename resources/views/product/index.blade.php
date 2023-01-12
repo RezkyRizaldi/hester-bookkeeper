@@ -12,7 +12,7 @@
 				<div class="col-12">
 					<div class="card">
 						<div class="card-header">
-							<a href="{{ route('products.create') }}" class="btn btn-primary float-right"><i class="nav-icon fa fa-plus"></i>  Tambah Produk</a>
+							<a href="{{ route('products.create') }}" class="btn btn-primary float-right"><i class="nav-icon fa fa-plus"></i>  Tambah Data Produk</a>
 						</div>
 						<div class="card-body">
 							<table id="table" class="table text-center table-bordered table-hover">

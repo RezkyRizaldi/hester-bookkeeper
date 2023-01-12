@@ -26,7 +26,7 @@
 								<tbody>
 									@foreach ($colors as $color)
 										<tr>
-											<td>{{ $loop->iteration }}</td>
+											<td>{{ $loop->iteration }}.</td>
 											<td>{{ $color->name }}</td>
 											<td>
 												<div class="dropdown">
@@ -51,6 +51,9 @@
 									@endforeach
 								</tbody>
 							</table>
+							<div class="mt-3">
+								{{ $colors->links() }}
+							</div>
 						</div>
 					</div>
 				</div>
@@ -65,7 +68,11 @@
 	<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 	<script>
 		$(document).ready(() => {
-			$('#table').DataTable();
+			$('#table').DataTable({
+				autoWidth: false,
+				responsive: true,
+				paging: false,
+			});
 		});
 	</script>
 @endpush

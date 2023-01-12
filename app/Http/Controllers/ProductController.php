@@ -15,12 +15,12 @@ use Illuminate\Http\RedirectResponse;
 
 class ProductController extends Controller
 {
-    private $brand;
-    private $color;
-    private $goods;
-    private $product;
-    private $productService;
-    private $sizes;
+    private Brand $brand;
+    private Color $color;
+    private Goods $goods;
+    private Product $product;
+    private ProductService $productService;
+    private array $sizes;
 
     public function __construct(Brand $brand, Color $color, Goods $goods, Product $product, ProductService $productService)
     {

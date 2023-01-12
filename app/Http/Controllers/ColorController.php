@@ -4,15 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ColorRequest;
 use App\Models\Color;
+use App\Services\ColorService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class ColorController extends Controller
 {
+    private Color $color;
+    private ColorService $colorService;
+
+    public function __construct(Color $color, ColorService $colorService)
+    {
+        $this->color = $color;
+        $this->colorService = $colorService;
+    }
+
     public function index(): View|Factory
     {
-        $colors = Color::all();
+        $colors = $this->color->paginate(10);
 
         return view('color.index', compact('colors'));
     }
@@ -24,9 +34,7 @@ class ColorController extends Controller
 
     public function store(ColorRequest $request): RedirectResponse
     {
-        Color::create($request->validated());
-
-        return redirect()->route('colors.index')->with('success', 'Data berhasil ditambahkan!');
+        return $this->colorService->saveColor($request);
     }
 
     public function edit(Color $color): View|Factory
@@ -36,15 +44,11 @@ class ColorController extends Controller
 
     public function update(ColorRequest $request, Color $color): RedirectResponse
     {
-        $color->update($request->validated());
-
-        return redirect()->route('colors.index')->with('success', 'Data berhasil diubah!');
+        return $this->colorService->saveColor($request, $color);
     }
 
     public function destroy(Color $color): RedirectResponse
     {
-        $color->delete();
-
-        return redirect()->route('colors.index')->with('success', 'Data berhasil dihapus!');
+        return $this->colorService->deleteColor($color);
     }
 }
