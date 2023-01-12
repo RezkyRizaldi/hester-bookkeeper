@@ -17,9 +17,6 @@ class ProductService
 
         try {
             $data = $request->all();
-
-            dd($data);
-
             $exists_product = Product::withTrashed()->where('brand_id', $data['brand_id'])->latest()->first();
             $brand = Brand::find($data['brand_id']);
 

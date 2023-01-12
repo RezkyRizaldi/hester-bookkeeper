@@ -101,21 +101,19 @@
 					<div class="form-row">
 						<div class="form-group col-md-4">
 							<label for="incoming">Barang Masuk</label>
-							<div class="d-flex flex-column" style="row-gap: 0.5rem;">
-								<div>
-									<input type="number" name="incoming[]" class="form-control @error('incoming.0') is-invalid @enderror" id="incoming1" placeholder="Barang Masuk" aria-labelledby="incoming" />
-									@error('incoming.0')
-										<div class="invalid-feedback">
-											{{ $message }}
-										</div>
-									@enderror
-								</div>
+							<div class="d-flex flex-column" style="{{ $errors->has('incoming.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
+								<input type="number" name="incoming[]" class="form-control @error('incoming.0') is-invalid @enderror" id="incoming1" placeholder="Barang Masuk" aria-labelledby="incoming" value="{{ old('incoming.0') }}" />
+								@error('incoming.0')
+									<div class="invalid-feedback mt-0">
+										{{ $message }}
+									</div>
+								@enderror
 							</div>
 						</div>
 						<div class="form-group col-md-4">
 							<label for="outgoing">Barang Keluar</label>
 							<div id="outgoingWrapper" class="d-flex flex-column" style="row-gap: 0.5rem;">
-								<input type="number" name="outgoing[]" class="form-control" id="outgoing1" placeholder="Barang Keluar" aria-labelledby="outgoing" />
+								<input type="number" name="outgoing[]" class="form-control" id="outgoing1" placeholder="Barang Keluar" aria-labelledby="outgoing" value="{{ old('outgoing.0') }}" />
 							</div>
 						</div>
 						<div class="form-group col-md-2">
@@ -161,7 +159,7 @@
 			$(`#outgoingWrapper input`).each(function (i) {
 				$(this).on('keyup', function () {
 					if (parseInt($(this).val()) > parseInt($(`#incoming${i + 1}`).val())) {
-						$(this).val(0);
+						$(this).val(parseInt($(this).val()));
 					}
 				});
 			});

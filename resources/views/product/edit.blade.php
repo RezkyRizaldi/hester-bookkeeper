@@ -103,17 +103,15 @@
 					<div class="form-row">
 						<div class="form-group col-md-4">
 							<label for="incoming">Barang Masuk</label>
-							<div class="d-flex flex-column" style="row-gap: 0.5rem;">
-								<div>
-									@foreach ($product->goods as $key => $goods)
-										<input type="number" name="incoming[]" class="form-control @error("incoming.{$key}") is-invalid @enderror" id="{{ "incoming{$loop->iteration}" }}" placeholder="Barang Masuk" value="{{ $goods->incoming }}" />
-										@error("incoming.{$key}")
-											<div class="invalid-feedback">
-												{{ $message }}
-											</div>
-										@enderror
-									@endforeach
-								</div>
+							<div class="d-flex flex-column" style="{{ $errors->has('incoming.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
+								@foreach ($product->goods as $key => $goods)
+									<input type="number" name="incoming[]" class="form-control @error("incoming.{$key}") is-invalid @enderror" id="{{ "incoming{$loop->iteration}" }}" placeholder="Barang Masuk" value="{{ $goods->incoming }}" />
+									@error("incoming.{$key}")
+										<div class="invalid-feedback mt-0">
+											{{ $message }}
+										</div>
+									@enderror
+								@endforeach
 							</div>
 						</div>
 						<div class="form-group col-md-4">
@@ -139,7 +137,7 @@
 				</div>
 				<div class="card-footer">
 					<button type="submit" class="btn btn-success float-right">Simpan</button>
-					<a href="{{ route('products.index') }}" class="btn btn-default ">Kembali</a>
+					<a href="{{ route('products.index') }}" class="btn btn-default">Kembali</a>
 				</div>
 			</form>
 		</div>
@@ -167,7 +165,7 @@
 			$(`#outgoingWrapper input`).each(function (i) {
 				$(this).on('keyup', function () {
 					if (parseInt($(this).val()) > parseInt($(`#incoming${i + 1}`).val())) {
-						$(this).val(0);
+						$(this).val(parseInt($(this).val()));
 					}
 				});
 			});

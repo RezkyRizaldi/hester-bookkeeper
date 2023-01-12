@@ -18,15 +18,18 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        foreach ($this->incoming as $key => $value) {
+            $incoming["incoming.{$key}"] = ['required', 'integer', "gte:outgoing.{$key}"];
+        }
+
+        return array_merge([
             'brand_id' => ['required', 'integer'],
             'color_id' => ['required', 'integer'],
             'name' => ['required', 'max:255', 'string'],
             'capital' => ['required', 'string'],
             'price' => ['required', 'string'],
             'size' => ['required', 'string', 'max:255'],
-            'incoming.*' => ['required', 'integer', 'gte:outgoing'],
-        ];
+        ], $incoming);
     }
 
     /**
@@ -36,11 +39,14 @@ class ProductRequest extends FormRequest
      */
     public function attributes(): array
     {
-        return [
+        foreach ($this->incoming as $key => $value) {
+            $incoming["incoming.{$key}"] = 'incoming';
+        }
+
+        return array_merge([
             'brand_id' => 'brand',
             'color_id' => 'color',
-            'incoming.*' => 'incoming',
-        ];
+        ], $incoming);
     }
 
     protected function prepareForValidation(): void
@@ -48,7 +54,7 @@ class ProductRequest extends FormRequest
         $this->merge([
             'capital' => str_replace(',', '', $this->capital),
             'price' => str_replace(',', '', $this->price),
-            // 'size' => implode(',', $this->size),
+            'size' => is_array($this->size) ? implode(',', $this->size) : (string) $this->size,
         ]);
     }
 }
