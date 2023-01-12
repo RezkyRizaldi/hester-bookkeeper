@@ -14,15 +14,15 @@
 						<div class="card-body">
 							<table class="table text-center table-bordered table-hover">
 								@foreach ($goods as $key => $items)
-									<thead>
+									<thead class="thead-dark">
 										<tr>
 											@if ($loop->first)
-												<th class="bg-secondary" scope="col"></th>
+												<th scope="col"></th>
 												<th scope="col">No.</th>
+												<th scope="col">Tanggal</th>
 												<th scope="col">Barang Masuk</th>
 												<th scope="col">Barang Keluar</th>
 												<th scope="col">Stok</th>
-												<th scope="col">Tanggal</th>
 											@endif
 										</tr>
 									</thead>
@@ -33,14 +33,24 @@
 													<th scope="row" rowspan="{{ count($items) }}">{{ $key }}</th>
 												@endif
 												<td>{{ $loop->iteration }}.</td>
+												<td>{{ $item->date }}</td>
 												<td>{{ $item->incoming }}</td>
 												<td>{{ $item->outgoing }}</td>
 												<td>{{ $item->stock }}</td>
-												<td>{{ $item->date }}</td>
 											</tr>
 										@endforeach
+										<tr>
+											<th scope="col" colspan="5">Jumlah Stok {{ $key }}</th>
+											<td style="font-weight: 600;">{{ $items->sum('stock') }}</td>
+										</tr>
 									</tbody>
 								@endforeach
+								<tfoot>
+									<tr class="bg-secondary">
+										<th colspan="5">Jumlah Stok</th>
+										<td style="font-weight: 600;">{{ $goods->sum(fn ($items) => $items->sum('stock')) }}</td>
+									</tr>
+								</tfoot>
 							</table>
 						</div>
 					</div>

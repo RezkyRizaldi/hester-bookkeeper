@@ -25,9 +25,9 @@ class ProductRequest extends FormRequest
         return array_merge([
             'brand_id' => ['required', 'integer'],
             'color_id' => ['required', 'integer'],
-            'name' => ['required', 'max:255', 'string'],
-            'capital' => ['required', 'string'],
-            'price' => ['required', 'string'],
+            'name' => ['required', 'string', 'max:255'],
+            'capital' => ['required', 'string', 'max:255'],
+            'price' => ['required', 'string', 'max:255'],
             'size' => ['required', 'string', 'max:255'],
         ], $incoming);
     }
