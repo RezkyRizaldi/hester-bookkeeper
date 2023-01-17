@@ -14,13 +14,12 @@ use Illuminate\Http\RedirectResponse;
 
 class IncomeController extends Controller
 {
-    private Income $income;
-    private IncomeService $incomeService;
-    private Product $product;
-    private Store $store;
-
-    public function __construct(Income $income, IncomeService $incomeService, Product $product, Store $store)
-    {
+    public function __construct(
+        private Income $income,
+        private IncomeService $incomeService,
+        private Product $product,
+        private Store $store
+    ) {
         $this->income = $income;
         $this->incomeService = $incomeService;
         $this->product = $product;

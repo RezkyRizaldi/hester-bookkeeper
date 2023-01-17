@@ -18,7 +18,9 @@
 							<table class="table text-center table-bordered table-hover">
 								<thead class="thead-dark">
 									<tr>
-										<th></th>
+										@if ($expenditures->isNotEmpty())
+											<th></th>
+										@endif
 										<th>No.</th>
 										<th>Tanggal</th>
 										<th>Kode Produk</th>
@@ -26,6 +28,7 @@
 										<th>Type</th>
 										<th>Jumlah</th>
 										<th>Harga Satuan</th>
+										<th>Total</th>
 										<th>Aksi</th>
 									</tr>
 								</thead>
@@ -43,6 +46,7 @@
 												<td>{{ $item->type }}</td>
 												<td>{{ $item->amount }}</td>
 												<td>Rp {{ number_format($item->price) }}</td>
+												<td>Rp {{ number_format($item->total) }}</td>
 												<td>
 													<div class="dropdown">
 														<button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -65,30 +69,20 @@
 											</tr>
 										@endforeach
 										<tr>
-											<th colspan="7">Jumlah Harga {{ $month }}</th>
-											<td colspan="2" style="font-weight: 600;">Rp {{ number_format($items->sum('price')) }}</td>
+											<th colspan="8">Jumlah Harga {{ $month }}</th>
+											<td colspan="2" style="font-weight: 600;">Rp {{ number_format($items->sum('total')) }}</td>
 										</tr>
 									@empty
 										<tr>
-											<th>No.</th>
-											<th>Tanggal</th>
-											<th>Kode Produk</th>
-											<th>Nama Produk</th>
-											<th>Type</th>
-											<th>Jumlah</th>
-											<th>Harga Satuan</th>
-											<th>Aksi</th>
-										</tr>
-										<tr>
-											<td colspan="8">Tidak ada data.</td>
+											<td colspan="10">Tidak ada data.</td>
 										</tr>
 									@endforelse
 								</tbody>
 								@if (!empty($expenditures))
 									<tfoot>
 										<tr class="bg-secondary">
-											<th colspan="7">Jumlah Harga</th>
-											<td colspan="2" style="font-weight: 600;">Rp {{ number_format($expenditures->sum(fn ($items) => $items->sum('price'))) }}</td>
+											<th colspan="8">Jumlah Harga</th>
+											<td colspan="2" style="font-weight: 600;">Rp {{ number_format($expenditures->sum(fn ($items) => $items->sum('total'))) }}</td>
 										</tr>
 									</tfoot>
 								@endif

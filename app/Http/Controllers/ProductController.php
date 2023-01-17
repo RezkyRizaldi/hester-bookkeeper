@@ -23,8 +23,7 @@ class ProductController extends Controller
         private Goods $goods,
         private Product $product,
         private ProductService $productService,
-    )
-    {
+    ) {
         $this->brand = $brand;
         $this->color = $color;
         $this->goods = $goods;
@@ -35,7 +34,7 @@ class ProductController extends Controller
 
     public function index(): View|Factory
     {
-        $products = $this->product->with(['brand', 'color', 'size'])->latest()->paginate(10);
+        $products = $this->product->with(['brand', 'color', 'sizes'])->latest()->paginate(10);
 
         return view('product.index', compact('products'));
     }
@@ -45,7 +44,7 @@ class ProductController extends Controller
         return view('product.create', [
             'brands' => $this->brand->all(),
             'colors' => $this->color->all(),
-            'sizes'  => $this->sizes,
+            'sizes' => $this->sizes,
         ]);
     }
 
@@ -66,13 +65,13 @@ class ProductController extends Controller
 
     public function edit(Product $product): View|Factory
     {
-        $product->load(['goods']);
+        $product->load(['goods', 'sizes']);
 
         return view('product.edit', [
-            'brands'  => $this->brand->all(),
-            'colors'  => $this->color->all(),
+            'brands' => $this->brand->all(),
+            'colors' => $this->color->all(),
             'product' => $product,
-            'sizes'   => $this->sizes,
+            'sizes' => $this->sizes,
         ]);
     }
 

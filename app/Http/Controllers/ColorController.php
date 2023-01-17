@@ -11,10 +11,7 @@ use Illuminate\Http\RedirectResponse;
 
 class ColorController extends Controller
 {
-    private Color $color;
-    private ColorService $colorService;
-
-    public function __construct(Color $color, ColorService $colorService)
+    public function __construct(private Color $color, private ColorService $colorService)
     {
         $this->color = $color;
         $this->colorService = $colorService;

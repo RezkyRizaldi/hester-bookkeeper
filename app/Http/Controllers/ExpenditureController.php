@@ -13,12 +13,9 @@ use Illuminate\Http\RedirectResponse;
 
 class ExpenditureController extends Controller
 {
-    private Expenditure $expenditure;
-    private ExpenditureService $expenditureService;
-    private Product $product;
     private array $types;
 
-    public function __construct(Expenditure $expenditure, ExpenditureService $expenditureService, Product $product)
+    public function __construct(private Expenditure $expenditure, private ExpenditureService $expenditureService, private Product $product)
     {
         $this->expenditure = $expenditure;
         $this->expenditureService = $expenditureService;

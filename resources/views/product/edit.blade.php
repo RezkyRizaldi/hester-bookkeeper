@@ -57,7 +57,7 @@
 						</div>
 					</div>
 					<div class="form-row">
-						<div class="form-group col-md-4">
+						<div class="form-group col-md-6">
 							<label for="capital">Modal</label>
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
@@ -71,7 +71,7 @@
 								@enderror
 							</div>
 						</div>
-						<div class="form-group col-md-4">
+						<div class="form-group col-md-6">
 							<label for="price">Harga</label>
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
@@ -85,57 +85,93 @@
 								@enderror
 							</div>
 						</div>
-						<div class="form-group col-md-4">
-							<label for="size">Ukuran</label>
-							<select name="size[]" id="size" class="is_select2 w-100 @error('size') is-invalid @enderror" multiple data-placeholder="Pilih Ukuran">
-								<option disabled value="">Pilih Ukuran</option>
-								@foreach ($sizes as $size)
-									<option @selected(in_array($size, $product->exists_size)) value="{{ $size }}">{{ $size }}</option>
-								@endforeach
-							</select>
-							@error('size')
-								<div class="invalid-feedback">
-									{{ $message }}
-								</div>
-							@enderror
-						</div>
 					</div>
-					<div class="form-row">
-						<div class="form-group col-md-4">
-							<label for="incoming">Barang Masuk</label>
-							<div class="d-flex flex-column" style="{{ $errors->has('incoming.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
-								@foreach ($product->goods as $key => $goods)
-									<input type="number" name="incoming[]" class="form-control @error("incoming.{$key}") is-invalid @enderror" id="{{ "incoming{$loop->iteration}" }}" placeholder="Barang Masuk" value="{{ $goods->incoming }}" min="1" />
-									@error("incoming.{$key}")
-										<div class="invalid-feedback mt-0">
-											{{ $message }}
-										</div>
-									@enderror
-								@endforeach
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-row">
+								<div class="form-group col-md-5">
+									<label for="incoming">Barang Masuk</label>
+									<div class="d-flex flex-column" style="{{ $errors->has('incoming.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
+										@foreach ($product->goods as $key => $goods)
+											<input type="number" name="incoming[]" class="form-control @error("incoming.{$key}") is-invalid @enderror" id="{{ "incoming{$loop->iteration}" }}" placeholder="Barang Masuk" value="{{ $goods->incoming }}" min="1" />
+											@error("incoming.{$key}")
+												<div class="invalid-feedback mt-0">
+													{{ $message }}
+												</div>
+											@enderror
+										@endforeach
+									</div>
+								</div>
+								<div class="form-group col-md-5">
+									<label for="outgoing">Barang Keluar</label>
+									<div id="outgoingWrapper" class="d-flex flex-column" style="{{ $errors->has('outgoing.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
+										@foreach ($product->goods as $key => $goods)
+											<input type="number" name="outgoing[]" class="form-control @error("outgoing.{$key}") is-invalid @enderror" id="{{ "outgoing{$loop->iteration}" }}" placeholder="Barang Keluar" value="{{ $goods->outgoing }}" min="0" />
+											@error("outgoing.{$key}")
+												<div class="invalid-feedback mt-0">
+													{{ $message }}
+												</div>
+											@enderror
+										@endforeach
+									</div>
+								</div>
+								<div class="form-group col-md-2">
+									<div class="d-flex" style="column-gap: 0.25rem; margin-top: 2rem">
+										<input type="hidden" value="{{ count($product->goods) }}" id="totalInput" />
+										<button class="btn btn-success" type="button" id="addInputBtn" title="Add">
+											<i class="fa fa-plus"></i>
+										</button>
+										<button class="btn btn-danger" type="button" id="removeInputBtn" title="Remove" disabled>
+											<i class="fa fa-minus"></i>
+										</button>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div class="form-group col-md-4">
-							<label for="outgoing">Barang Keluar</label>
-							<div id="outgoingWrapper" class="d-flex flex-column" style="{{ $errors->has('outgoing.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
-								@foreach ($product->goods as $key => $goods)
-									<input type="number" name="outgoing[]" class="form-control @error("outgoing.{$key}") is-invalid @enderror" id="{{ "outgoing{$loop->iteration}" }}" placeholder="Barang Keluar" value="{{ $goods->outgoing }}" min="0" />
-									@error("outgoing.{$key}")
-										<div class="invalid-feedback mt-0">
-											{{ $message }}
-										</div>
-									@enderror
-								@endforeach
-							</div>
-						</div>
-						<div class="form-group col-md-2">
-							<div class="d-flex" style="column-gap: 0.5rem; margin-top: 2rem">
-								<input type="hidden" value="{{ count($product->goods) }}" id="totalInput" />
-								<button class="btn btn-success" type="button" id="addInputBtn" title="Add">
-									<i class="fa fa-plus"></i>
-								</button>
-								<button class="btn btn-danger" type="button" id="removeInputBtn" title="Remove">
-									<i class="fa fa-minus"></i>
-								</button>
+						<div class="col-md-6">
+							<div class="form-row">
+								<div class="form-group col-md-5">
+									<label for="size">Ukuran</label>
+									<div class="d-flex flex-column" style="{{ $errors->has('size.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
+										@foreach ($product->sizes as $key => $size)
+											<select name="size[]" id="size{{ $loop->iteration }}" class="custom-select @error("size.{$key}") is-invalid @enderror">
+												@foreach ($sizes as $s)
+													<option @selected($size->size === $s) value="{{ $s }}">{{ $s }}</option>
+												@endforeach
+											</select>
+											@error("size.{$key}")
+												<div class="invalid-feedback">
+													{{ $message }}
+												</div>
+											@enderror
+										@endforeach
+									</div>
+								</div>
+								<div class="form-group col-md-5">
+									<label for="amount">Jumlah</label>
+									<div id="amountWrapper" class="d-flex flex-column" style="{{ $errors->has('amount.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
+										@foreach ($product->sizes as $key => $size)
+											<input type="number" name="amount[]" class="form-control @error("amount.{$key}") is-invalid @enderror" id="amount{{ $loop->iteration }}" placeholder="Jumlah Pcs" value="{{ $size->amount }}" min="0" />
+											@error("amount.{$key}")
+												<div class="invalid-feedback">
+													{{ $message }}
+												</div>
+											@enderror
+										@endforeach
+									</div>
+								</div>
+								<div class="form-group col-md-2">
+									<div class="d-flex" style="column-gap: 0.25rem; margin-top: 2rem">
+										<input type="hidden" value="{{ count($product->sizes) }}" id="totalInputSize" />
+										<input type="hidden" value="{{ base64_encode(json_encode($sizes)) }}" id="sizes" />
+										<button class="btn btn-success" type="button" id="addInputSizeBtn" title="Tambah Input">
+											<i class="fa fa-plus"></i>
+										</button>
+										<button class="btn btn-danger" type="button" id="removeInputSizeBtn" title="Hapus Input" disabled>
+											<i class="fa fa-minus"></i>
+										</button>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -169,8 +205,24 @@
 		function init() {
 			$(`#outgoingWrapper input`).each(function (i) {
 				$(this).on('keyup', function () {
+					if ($(this).val().startsWith('0')) {
+						$(this).val(0);
+					}
+
 					if (parseInt($(this).val()) > parseInt($(`#incoming${i + 1}`).val())) {
 						$(this).val(parseInt($(`#incoming${i + 1}`).val()));
+					}
+				});
+			});
+
+			$('#amountWrapper input').each(function (i) {
+				$(this).on('keyup', function () {
+					if ($(this).val().startsWith('0')) {
+						$(this).val(0);
+					}
+
+					if (parseInt($(this).val()) > parseInt($(`#outgoing${i + 1}`).val())) {
+						$(this).val(parseInt($(`#outgoing${i + 1}`).val()));
 					}
 				});
 			});
@@ -180,22 +232,80 @@
 
 		$('#addInputBtn').on('click', () => {
 			let totalInput = parseInt($('#totalInput').val());
-			const incomingInput = `<input type="number" name="incoming[]" class="form-control @error('incoming.${totalInput}') is-invalid @enderror" id="incoming${totalInput + 1}" aria-labeledby="incoming" placeholder="Barang Keluar" value="{{ old('incoming.${totalInput}') }}" min="1" />`;
-			const outgoingInput = `<input type="number" name="outgoing[]" class="form-control @error('outgoing.${totalInput}') is-invalid @enderror" id="outgoing${totalInput + 1}" aria-labeledby="outgoing" placeholder="Barang Keluar" value="{{ old('outgoing.${totalInput}') ?? 0 }}" min="0" />`;
+			const incomingInput = `<input type="number" name="incoming[]" class="form-control @error('incoming.${totalInput}') is-invalid @enderror" id="incoming${totalInput + 1}" aria-labelledby="incoming" placeholder="Barang Keluar" value="{{ old('incoming.${totalInput}') }}" min="1" />`;
+			const outgoingInput = `<input type="number" name="outgoing[]" class="form-control @error('outgoing.${totalInput}') is-invalid @enderror" id="outgoing${totalInput + 1}" aria-labelledby="outgoing" placeholder="Barang Keluar" value="{{ old('outgoing.${totalInput}') ?? 0 }}" min="0" />`;
 
 			$(incomingInput).insertAfter(`#incoming${totalInput}`);
 			$(outgoingInput).insertAfter(`#outgoing${totalInput}`);
-			$('#totalInput').val(totalInput + 1);
+			$('#totalInput').val(totalInput + 1).trigger('change');
+
 			init();
 		});
 
 		$('#removeInputBtn').on('click', () => {
-			let lastInput = parseInt($('#totalInput').val());
+			let totalInput = parseInt($('#totalInput').val());
 
-			if (lastInput > 1) {
-				$('#incoming' + lastInput).remove();
-				$('#outgoing' + lastInput).remove();
-				$('#totalInput').val(lastInput - 1);
+			if (totalInput > 1) {
+				$(`#incoming${totalInput}`).remove();
+				$(`#outgoing${totalInput}`).remove();
+				$('#totalInput').val(totalInput - 1).trigger('change');
+			}
+
+			init();
+		});
+
+		$('#totalInput').change(function () {
+			if (parseInt($(this).val()) <= 1) {
+				$('#removeInputBtn').attr('disabled', true);
+			} else {
+				$('#removeInputBtn').removeAttr('disabled');
+			}
+		});
+
+		$('#addInputSizeBtn').on('click', function () {
+			const sizes = JSON.parse(atob($('#sizes').val()));
+
+			let optionSizes = [];
+			for (let i = 0; i < sizes.length; i++) {
+				const size = sizes[i];
+
+				optionSizes.push(`<option selected="{{ old('size.${i}') }}" value="${size}">${size}</option>`);
+			}
+
+			let totalInputSize = parseInt($('#totalInputSize').val());
+			const sizeInput = `<select name="size[]" id="size${totalInputSize + 1}" class="custom-select @error('size.${totalInputSize}') is-invalid @enderror" aria-labelledby="size">${optionSizes.join('\n')}</select>`;
+			const amountInput = `<input type="number" name="amount[]" class="form-control @error('amount.${totalInputSize}') is-invalid @enderror" id="amount${totalInputSize + 1}" aria-labelledby="amount" placeholder="Jumlah Pcs" value="{{ old('amount.${totalInput}') }}" min="0" />`;
+
+			$(sizeInput).insertAfter(`#size${totalInputSize}`);
+			$(amountInput).insertAfter(`#amount${totalInputSize}`);
+			$('#totalInputSize').val(totalInputSize + 1).trigger('change');
+
+			init();
+		});
+
+		$('#removeInputSizeBtn').on('click', function () {
+			let totalInputSize = parseInt($('#totalInputSize').val());
+
+			if (totalInputSize > 1) {
+				$(`#size${totalInputSize}`).remove();
+				$(`#amount${totalInputSize}`).remove();
+				$('#totalInputSize').val(totalInputSize - 1).trigger('change');
+			}
+
+			init();
+		});
+
+		$('#totalInputSize').change(function () {
+			if (parseInt($(this).val()) <= 1) {
+				$('#removeInputSizeBtn').attr('disabled', true);
+			} else {
+				$('#removeInputSizeBtn').removeAttr('disabled');
+			}
+
+			if (parseInt($(this).val()) >= 5) {
+				$('#addInputSizeBtn').prop('disabled', true);
+			} else {
+				$('#addInputSizeBtn').prop('disabled', false);
 			}
 
 			init();

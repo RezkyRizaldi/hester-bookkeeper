@@ -29,7 +29,8 @@ class ProductRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'capital' => ['required', 'string', 'max:255'],
             'price' => ['required', 'string', 'max:255'],
-            'size' => ['required', 'string', 'max:255'],
+            'size.*' => ['required', 'string', 'max:255'],
+            'amount.*' => ['required', 'integer'],
         ], $incoming, $outgoing);
     }
 
@@ -48,6 +49,8 @@ class ProductRequest extends FormRequest
         return array_merge([
             'brand_id' => 'brand',
             'color_id' => 'color',
+            'size.*' => 'size',
+            'amount.*' => 'amount',
         ], $incoming, $outgoing);
     }
 
@@ -56,7 +59,6 @@ class ProductRequest extends FormRequest
         $this->merge([
             'capital' => str_replace(',', '', $this->capital),
             'price' => str_replace(',', '', $this->price),
-            'size' => is_array($this->size) ? implode(',', $this->size) : (string) $this->size,
         ]);
     }
 }

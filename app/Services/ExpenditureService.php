@@ -19,8 +19,7 @@ class ExpenditureService
                 $expenditure = Expenditure::create($data);
             }
 
-
-            return redirect()->route('expenditures.index')->with('success', 'Data berhasil ' . ($expenditure->wasRecentlyCreated ? 'ditambahkan!' : 'diubah!'));
+            return redirect()->route('expenditures.index')->with('success', 'Data berhasil '.($expenditure->wasRecentlyCreated ? 'ditambahkan!' : 'diubah!'));
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

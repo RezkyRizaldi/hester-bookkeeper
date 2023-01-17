@@ -58,22 +58,6 @@
 							</div>
 						</div>
 						<div class="form-group col-md-6">
-							<label for="profit">Keuntungan</label>
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text">Rp</span>
-								</div>
-								<input type="text" name="profit" class="form-control format-currency @error('profit') is-invalid @enderror" id="profit" placeholder="Keuntungan" value="{{ old('profit') }}" maxlength="10" />
-								@error('profit')
-									<div class="invalid-feedback">
-										{{ $message }}
-									</div>
-								@enderror
-							</div>
-						</div>
-					</div>
-					<div class="form-row">
-						<div class="form-group col-md-6">
 							<label for="date">Tanggal</label>
 							<input type="date" name="date" class="form-control @error('date') is-invalid @enderror" id="date" placeholder="Tanggal" value="{{ old('date') ?? now()->format('Y-m-d') }}" />
 							@error('date')

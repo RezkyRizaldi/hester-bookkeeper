@@ -111,12 +111,12 @@
 									</div>
 								</div>
 								<div class="form-group col-md-2">
-									<div class="d-flex" style="column-gap: 0.5rem; margin-top: 2rem">
+									<div class="d-flex" style="column-gap: 0.25rem; margin-top: 2rem">
 										<input type="hidden" value="1" id="totalInput" />
 										<button class="btn btn-success" type="button" id="addInputBtn" title="Tambah Input">
 											<i class="fa fa-plus"></i>
 										</button>
-										<button class="btn btn-danger" type="button" id="removeInputBtn" title="Hapus Input">
+										<button class="btn btn-danger" type="button" id="removeInputBtn" title="Hapus Input" disabled>
 											<i class="fa fa-minus"></i>
 										</button>
 									</div>
@@ -127,10 +127,10 @@
 							<div class="form-row">
 								<div class="form-group col-md-5">
 									<label for="size">Ukuran</label>
-									<div class="d-flex flex-column" style="{{ $errors->has('size.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
-										<select name="size[]" id="size1" class="is_select2 w-100 @error('size.0') is-invalid @enderror" data-placeholder="Ukuran">
-											@foreach ($sizes as $size)
-												<option @selected(old('size') === $size) value="{{ $size }}">{{ $size }}</option>
+									<div id="sizeWrapper" class="d-flex flex-column" style="{{ $errors->has('size.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
+										<select name="size[]" id="size1" class="custom-select @error('size.0') is-invalid @enderror">
+											@foreach ($sizes as $key => $size)
+												<option @selected(old("size.{$key}") === $size) value="{{ $size }}">{{ $size }}</option>
 											@endforeach
 										</select>
 										@error('size.0')
@@ -142,8 +142,8 @@
 								</div>
 								<div class="form-group col-md-5">
 									<label for="amount">Jumlah</label>
-									<div class="d-flex flex-column" style="{{ $errors->has('amount.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
-										<input type="number" name="amount[]" class="form-control @error('amount.0') is-invalid @enderror" id="amount1" placeholder="Jumlah Pcs" value="{{ old('amount.0') }}" />
+									<div id="amountWrapper" class="d-flex flex-column" style="{{ $errors->has('amount.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
+										<input type="number" name="amount[]" class="form-control @error('amount.0') is-invalid @enderror" id="amount1" placeholder="Jumlah Pcs" value="{{ old('amount.0') ?? 0 }}" min="0" />
 										@error('amount.0')
 											<div class="invalid-feedback">
 												{{ $message }}
@@ -152,14 +152,13 @@
 									</div>
 								</div>
 								<div class="form-group col-md-2">
-									<div class="d-flex" style="column-gap: 0.5rem; margin-top: 2rem">
+									<div class="d-flex" style="column-gap: 0.25rem; margin-top: 2rem">
 										<input type="hidden" value="1" id="totalInputSize" />
 										<input type="hidden" value="{{ base64_encode(json_encode($sizes)) }}" id="sizes" />
-										<input type="hidden" value="{{ base64_encode(json_encode([])) }}" id="currentSizes" />
 										<button class="btn btn-success" type="button" id="addInputSizeBtn" title="Tambah Input">
 											<i class="fa fa-plus"></i>
 										</button>
-										<button class="btn btn-danger" type="button" id="removeInputSizeBtn" title="Hapus Input">
+										<button class="btn btn-danger" type="button" id="removeInputSizeBtn" title="Hapus Input" disabled>
 											<i class="fa fa-minus"></i>
 										</button>
 									</div>
@@ -197,8 +196,24 @@
 		function init() {
 			$(`#outgoingWrapper input`).each(function (i) {
 				$(this).on('keyup', function () {
+					if ($(this).val().startsWith('0')) {
+						$(this).val(0);
+					}
+
 					if (parseInt($(this).val()) > parseInt($(`#incoming${i + 1}`).val())) {
 						$(this).val(parseInt($(`#incoming${i + 1}`).val()));
+					}
+				});
+			});
+
+			$('#amountWrapper input').each(function (i) {
+				$(this).on('keyup', function () {
+					if ($(this).val().startsWith('0')) {
+						$(this).val(0);
+					}
+
+					if (parseInt($(this).val()) > parseInt($(`#outgoing${i + 1}`).val())) {
+						$(this).val(parseInt($(`#outgoing${i + 1}`).val()));
 					}
 				});
 			});
@@ -213,7 +228,8 @@
 
 			$(incomingInput).insertAfter(`#incoming${totalInput}`);
 			$(outgoingInput).insertAfter(`#outgoing${totalInput}`);
-			$('#totalInput').val(totalInput + 1);
+			$('#totalInput').val(totalInput + 1).trigger('change');
+
 			init();
 		});
 
@@ -223,44 +239,68 @@
 			if (totalInput > 1) {
 				$(`#incoming${totalInput}`).remove();
 				$(`#outgoing${totalInput}`).remove();
-				$('#totalInput').val(totalInput - 1);
+				$('#totalInput').val(totalInput - 1).trigger('change');
 			}
 
 			init();
 		});
 
-		const sizes = JSON.parse(atob($('#sizes').val()));
-		const currentSizes = JSON.parse(atob($('#currentSizes').val()));
+		$('#totalInput').change(function () {
+			if (parseInt($(this).val()) <= 1) {
+				$('#removeInputBtn').attr('disabled', true);
+			} else {
+				$('#removeInputBtn').removeAttr('disabled');
+			}
+		});
 
-		console.log(currentSizes);
 
-		let optionSizes = [];
-		for (let i = 1; i < sizes.length; i++) {
-			const size = sizes[i];
+		$('#addInputSizeBtn').on('click', function () {
+			const sizes = JSON.parse(atob($('#sizes').val()));
 
-			optionSizes.push(`<option selected="{{ old('size.${i}') }}" value="${size}">${size}</option>`);
-		}
+			let optionSizes = [];
+			for (let i = 0; i < sizes.length; i++) {
+				const size = sizes[i];
 
-		$('#addInputSizeBtn').on('click', () => {
-			const duplicates = sizes.filter((v) => currentSizes.some((e) => e === v));
+				optionSizes.push(`<option selected="{{ old('size.${i}') }}" value="${size}">${size}</option>`);
+			}
+
 			let totalInputSize = parseInt($('#totalInputSize').val());
-			const sizeInput = `<select name="size[]" id="size${totalInputSize + 1}" class="is_select2 w-100 @error('size.${totalInputSize}') is-invalid @enderror" data-placeholder="Ukuran" aria-labelledby="size">${optionSizes.join('\n')}</select>`;
-			const amountInput = `<input type="number" name="amount[]" class="form-control @error('amount.${totalInputSize}') is-invalid @enderror" id="amount${totalInputSize + 1}" aria-labelledby="amount" placeholder="Barang Keluar" value="{{ old('amount.${totalInput}') }}" min="0" />`;
+			const sizeInput = `<select name="size[]" id="size${totalInputSize + 1}" class="custom-select @error('size.${totalInputSize}') is-invalid @enderror" aria-labelledby="size">${optionSizes.join('\n')}</select>`;
+			const amountInput = `<input type="number" name="amount[]" class="form-control @error('amount.${totalInputSize}') is-invalid @enderror" id="amount${totalInputSize + 1}" aria-labelledby="amount" placeholder="Jumlah Pcs" value="{{ old('amount.${totalInput}') }}" min="0" />`;
 
 			$(sizeInput).insertAfter(`#size${totalInputSize}`);
 			$(amountInput).insertAfter(`#amount${totalInputSize}`);
-			$('#totalInputSize').val(totalInputSize + 1);
-			$('#currentSizes').val(JSON.stringify(btoa(['M'])));
+			$('#totalInputSize').val(totalInputSize + 1).trigger('change');
+
+			init();
 		});
 
-		$('#removeInputSizeBtn').on('click', () => {
+		$('#removeInputSizeBtn').on('click', function () {
 			let totalInputSize = parseInt($('#totalInputSize').val());
 
 			if (totalInputSize > 1) {
 				$(`#size${totalInputSize}`).remove();
 				$(`#amount${totalInputSize}`).remove();
-				$('#totalInputSize').val(totalInputSize - 1);
+				$('#totalInputSize').val(totalInputSize - 1).trigger('change');
 			}
+
+			init();
+		});
+
+		$('#totalInputSize').change(function () {
+			if (parseInt($(this).val()) <= 1) {
+				$('#removeInputSizeBtn').attr('disabled', true);
+			} else {
+				$('#removeInputSizeBtn').removeAttr('disabled');
+			}
+
+			if (parseInt($(this).val()) >= 5) {
+				$('#addInputSizeBtn').prop('disabled', true);
+			} else {
+				$('#addInputSizeBtn').prop('disabled', false);
+			}
+
+			init();
 		});
 	</script>
 @endpush

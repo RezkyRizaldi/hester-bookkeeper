@@ -22,7 +22,6 @@ class IncomeRequest extends FormRequest
             'store_id' => ['required', 'integer'],
             'product_id' => ['required', 'integer'],
             'amount' => ['required', 'string', 'max:255'],
-            'profit' => ['required', 'string', 'max:255'],
             'date' => ['required', 'date'],
         ];
     }
@@ -31,7 +30,6 @@ class IncomeRequest extends FormRequest
     {
         $this->merge([
             'amount' => str_replace(',', '', $this->amount),
-            'profit' => str_replace(',', '', $this->profit),
         ]);
     }
 }

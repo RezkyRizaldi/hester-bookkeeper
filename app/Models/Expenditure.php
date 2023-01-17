@@ -22,7 +22,7 @@ class Expenditure extends Model
     /**
      * @var array<int, string>
      */
-    protected $appends = ['formatted_date', 'translated_date'];
+    protected $appends = ['formatted_date', 'total', 'translated_date'];
 
     /**
      * @var array<string, string>
@@ -33,6 +33,13 @@ class Expenditure extends Model
         'deleted_at' => 'datetime:d-m-Y',
         'updated_at' => 'datetime:d-m-Y',
     ];
+
+    protected function total(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->amount * $this->price,
+        );
+    }
 
     protected function translatedDate(): Attribute
     {

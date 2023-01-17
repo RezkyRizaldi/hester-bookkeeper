@@ -15,8 +15,8 @@
 							<a href="{{ route('products.create') }}" class="btn btn-primary float-right"><i class="nav-icon fa fa-plus"></i>  Tambah Data Produk</a>
 						</div>
 						<div class="card-body">
-							<table id="table" class="table text-center table-bordered table-hover">
-								<thead>
+							<table class="table text-center table-bordered table-hover">
+								<thead class="thead-dark">
 									<tr>
 										<th>No.</th>
 										<th>Merek</th>
@@ -30,7 +30,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									@foreach ($products as $product)
+									@forelse ($products as $product)
 										<tr>
 											<td>{{ $loop->iteration }}.</td>
 											<td>{{ $product->brand->name }}</td>
@@ -38,7 +38,14 @@
 											<td>{{ $product->name }}</td>
 											<td>Rp {{ number_format($product->capital) }}</td>
 											<td>Rp {{ number_format($product->price) }}</td>
-											<td>{{ $product->size }}</td>
+											<td class="align-middle">
+												@foreach ($product->sizes as $key => $size)
+													<div class="d-flex justify-content-around">
+														<span class="w-100" style="border-right: 1px solid #000; font-size: 14px">{{ $size->size }}</span>
+														<span class="w-100" style="border-left: 1px solid #000; font-size: 14px">{{ $product->sizes[$key]->amount }}</span>
+													</div>
+												@endforeach
+											</td>
 											<td>{{ $product->color->name }}</td>
 											<td>
 												<div class="dropdown">
@@ -63,7 +70,11 @@
 												</div>
 											</td>
 										</tr>
-									@endforeach
+									@empty
+										<tr>
+											<td colspan="9">Tidak ada data.</td>
+										</tr>
+									@endforelse
 								</tbody>
 							</table>
 							<div class="mt-3">
@@ -76,18 +87,3 @@
 		</div>
 	</section>
 @endsection
-@push('styles')
-	<link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css"></link>
-@endpush
-@push('scripts')
-	<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-	<script>
-		$(document).ready(() => {
-			$('#table').DataTable({
-				autoWidth: false,
-				responsive: true,
-				paging: false,
-			});
-		});
-	</script>
-@endpush

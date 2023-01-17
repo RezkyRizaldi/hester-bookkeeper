@@ -8,9 +8,7 @@ use Illuminate\Contracts\View\View;
 
 class BrandController extends Controller
 {
-    private Brand $brand;
-
-    public function __construct(Brand $brand)
+    public function __construct(private Brand $brand)
     {
         $this->brand = $brand;
     }

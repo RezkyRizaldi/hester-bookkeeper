@@ -15,7 +15,6 @@ return new class extends Migration
             $table->foreignIdFor(Product::class);
             $table->foreignIdFor(Store::class);
             $table->integer('amount');
-            $table->integer('profit');
             $table->date('date')->default(now());
             $table->softDeletes();
             $table->timestamps();

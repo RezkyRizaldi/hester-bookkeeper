@@ -18,7 +18,9 @@
 							<table class="table text-center table-bordered table-hover">
 								<thead class="thead-dark">
 									<tr>
-										<th></th>
+										@if ($incomes->isNotEmpty())
+											<th></th>
+										@endif
 										<th>No.</th>
 										<th>Tanggal</th>
 										<th>Toko</th>
@@ -70,17 +72,7 @@
 										</tr>
 									@empty
 										<tr>
-											<th>No.</th>
-											<th>Tanggal</th>
-											<th>Toko</th>
-											<th>Kode Produk</th>
-											<th>Nama Produk</th>
-											<th>Uang Masuk</th>
-											<th>Keuntungan</th>
-											<th>Aksi</th>
-										</tr>
-										<tr>
-											<td colspan="8">Tidak ada data.</td>
+											<td colspan="9">Tidak ada data.</td>
 										</tr>
 									@endforelse
 								</tbody>

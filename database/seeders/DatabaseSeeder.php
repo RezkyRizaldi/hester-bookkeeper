@@ -11,13 +11,13 @@ class DatabaseSeeder extends Seeder
     {
         $brands = [
             [
-                'name'  => 'Hester',
-                'code'  => 'H',
+                'name' => 'Hester',
+                'code' => 'H',
                 'created_at' => now(),
             ],
             [
-                'name'  => 'Heavy Breathing',
-                'code'  => 'HB',
+                'name' => 'Heavy Breathing',
+                'code' => 'HB',
                 'created_at' => now(),
             ],
         ];

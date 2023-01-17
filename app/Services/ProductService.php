@@ -6,6 +6,7 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Brand;
 use App\Models\Goods;
 use App\Models\Product;
+use App\Models\Size;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -23,6 +24,7 @@ class ProductService
             if ($product) {
                 $product->update($data);
                 Goods::where('product_id', $product->id)->delete();
+                Size::where('product_id', $product->id)->delete();
             } else {
                 $number_code = '01';
 
@@ -45,14 +47,23 @@ class ProductService
                     ]);
                 }
 
+                foreach ($data['size'] as $key => $size) {
+                    $sizes[] = new Size([
+                        'product_id' => $product['id'],
+                        'size' => $size,
+                        'amount' => $data['amount'][$key],
+                    ]);
+                }
+
                 $product->goods()->saveMany($goods);
+                $product->sizes()->saveMany($sizes);
                 DB::commit();
 
-                return redirect()->route('products.index')->with('success', 'Data berhasil ' . ($product->wasRecentlyCreated ? 'ditambahkan!' : 'diubah!'));
+                return redirect()->route('products.index')->with('success', 'Data berhasil '.($product->wasRecentlyCreated ? 'ditambahkan!' : 'diubah!'));
             } else {
                 DB::rollback();
 
-                return back()->with('error', 'Data gagal ' . ($product->wasRecentlyCreated ? 'ditambahkan!' : 'diubah!'));
+                return back()->with('error', 'Data gagal '.($product->wasRecentlyCreated ? 'ditambahkan!' : 'diubah!'));
             }
         } catch (\Exception $e) {
             DB::rollback();

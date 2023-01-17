@@ -19,8 +19,7 @@ class IncomeService
                 $income = Income::create($data);
             }
 
-
-            return redirect()->route('incomes.index')->with('success', 'Data berhasil ' . ($income->wasRecentlyCreated ? 'ditambahkan!' : 'diubah!'));
+            return redirect()->route('incomes.index')->with('success', 'Data berhasil '.($income->wasRecentlyCreated ? 'ditambahkan!' : 'diubah!'));
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

@@ -59,22 +59,6 @@
 							</div>
 						</div>
 						<div class="form-group col-md-6">
-							<label for="profit">Keuntungan</label>
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text">Rp</span>
-								</div>
-								<input type="text" name="profit" class="form-control format-currency @error('profit') is-invalid @enderror" id="profit" placeholder="Keuntungan" value="{{ $income->profit }}" maxlength="10" />
-								@error('profit')
-									<div class="invalid-feedback">
-										{{ $message }}
-									</div>
-								@enderror
-							</div>
-						</div>
-					</div>
-					<div class="form-row">
-						<div class="form-group col-md-6">
 							<label for="date">Tanggal</label>
 							<input type="date" name="date" class="form-control @error('date') is-invalid @enderror" id="date" placeholder="Tanggal" value="{{ $income->formatted_date }}" />
 							@error('date')
@@ -107,43 +91,4 @@
     	background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 		}
 	</style>
-@endpush
-
-@push('scripts')
-	<script type="text/javascript">
-		function init() {
-			$(`#outgoingWrapper input`).each(function (i) {
-				$(this).on('keyup', function () {
-					if (parseInt($(this).val()) > parseInt($(`#incoming${i + 1}`).val())) {
-						$(this).val(parseInt($(this).val()));
-					}
-				});
-			});
-		}
-
-		init();
-
-		$('#addInputBtn').on('click', () => {
-			let totalInput = parseInt($('#totalInput').val());
-			const incomingInput = `<input type="number" name="incoming[]" class="form-control @error('incoming.${totalInput}') is-invalid @enderror" id="incoming${totalInput + 1}" aria-labeledby="incoming" placeholder="Barang Keluar" value="{{ old('incoming.${totalInput}') }}" />`;
-			const outgoingInput = `<input type="number" name="outgoing[]" class="form-control id="outgoing${totalInput + 1}" aria-labeledby="outgoing" placeholder="Barang Keluar" value="{{ old('outgoing.${totalInput}') }}" />`;
-
-			$(incomingInput).insertAfter(`#incoming${totalInput}`);
-			$(outgoingInput).insertAfter(`#outgoing${totalInput}`);
-			$('#totalInput').val(totalInput + 1);
-			init();
-		});
-
-		$('#removeInputBtn').on('click', () => {
-			let lastInput = parseInt($('#totalInput').val());
-
-			if (lastInput > 1) {
-				$('#incoming' + lastInput).remove();
-				$('#outgoing' + lastInput).remove();
-				$('#totalInput').val(lastInput - 1);
-			}
-
-			init();
-		});
-	</script>
 @endpush

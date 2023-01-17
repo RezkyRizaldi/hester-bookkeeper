@@ -19,7 +19,7 @@ class ColorService
                 $color = Color::create($data);
             }
 
-            return redirect()->route('colors.index')->with('success', 'Data berhasil ' . ($color->wasRecentlyCreated ? 'ditambahkan!' : 'diubah!'));
+            return redirect()->route('colors.index')->with('success', 'Data berhasil '.($color->wasRecentlyCreated ? 'ditambahkan!' : 'diubah!'));
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

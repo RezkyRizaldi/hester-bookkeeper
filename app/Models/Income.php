@@ -17,12 +17,12 @@ class Income extends Model
     /**
      * @var array<int, string>
      */
-    protected $fillable = ['product_id', 'store_id', 'amount', 'profit', 'date'];
+    protected $fillable = ['product_id', 'store_id', 'amount', 'date'];
 
     /**
      * @var array<int, string>
      */
-    protected $appends = ['formatted_date', 'translated_date'];
+    protected $appends = ['formatted_date', 'profit', 'translated_date'];
 
     /**
      * @var array<string, string>
@@ -33,6 +33,13 @@ class Income extends Model
         'deleted_at' => 'datetime:d-m-Y',
         'updated_at' => 'datetime:d-m-Y',
     ];
+
+    protected function profit(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->amount - $this->product->capital,
+        );
+    }
 
     protected function translatedDate(): Attribute
     {

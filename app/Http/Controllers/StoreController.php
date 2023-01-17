@@ -8,9 +8,7 @@ use Illuminate\Contracts\View\View;
 
 class StoreController extends Controller
 {
-    private Store $store;
-
-    public function __construct(Store $store)
+    public function __construct(private Store $store)
     {
         $this->store = $store;
     }
