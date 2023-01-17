@@ -16,27 +16,25 @@
 						</div>
 						<div class="card-body">
 							<table class="table text-center table-bordered table-hover">
-								@forelse ($expenditures as $month => $items)
-									<thead class="thead-dark">
-										<tr>
-											@if ($loop->first)
-												<th></th>
-												<th>No.</th>
-												<th>Tanggal</th>
-												<th>Kode Produk</th>
-												<th>Nama Produk</th>
-												<th>Type</th>
-												<th>Jumlah</th>
-												<th>Harga Satuan</th>
-												<th>Aksi</th>
-											@endif
-										</tr>
-									</thead>
-									<tbody>
+								<thead class="thead-dark">
+									<tr>
+										<th></th>
+										<th>No.</th>
+										<th>Tanggal</th>
+										<th>Kode Produk</th>
+										<th>Nama Produk</th>
+										<th>Type</th>
+										<th>Jumlah</th>
+										<th>Harga Satuan</th>
+										<th>Aksi</th>
+									</tr>
+								</thead>
+								<tbody>
+									@forelse ($expenditures as $month => $items)
 										@foreach ($items as $item)
 											<tr>
 												@if ($loop->first)
-													<th scope="row" rowspan="{{ count($items) }}">{{ $month }}</th>
+													<th rowspan="{{ count($items) }}">{{ $month }}</th>
 												@endif
 												<td>{{ $loop->iteration }}.</td>
 												<td>{{ $item->translated_date }}</td>
@@ -70,9 +68,7 @@
 											<th colspan="7">Jumlah Harga {{ $month }}</th>
 											<td colspan="2" style="font-weight: 600;">Rp {{ number_format($items->sum('price')) }}</td>
 										</tr>
-									</tbody>
-								@empty
-									<tbody>
+									@empty
 										<tr>
 											<th>No.</th>
 											<th>Tanggal</th>
@@ -86,8 +82,8 @@
 										<tr>
 											<td colspan="8">Tidak ada data.</td>
 										</tr>
-									</tbody>
-								@endforelse
+									@endforelse
+								</tbody>
 								@if (!empty($expenditures))
 									<tfoot>
 										<tr class="bg-secondary">

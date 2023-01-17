@@ -17,7 +17,7 @@ class Product extends Model
     /**
      * @var array<int, string>
      */
-    protected $fillable = ['brand_id', 'color_id', 'code', 'name', 'capital', 'price', 'size'];
+    protected $fillable = ['brand_id', 'color_id', 'size_id', 'code', 'name', 'capital', 'price'];
 
     /**
      * @var array<int, string>
@@ -48,6 +48,11 @@ class Product extends Model
     public function color(): BelongsTo
     {
         return $this->belongsTo(Color::class);
+    }
+
+    public function sizes(): HasMany
+    {
+        return $this->hasMany(Size::class);
     }
 
     public function incomes(): HasMany

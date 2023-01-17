@@ -56,7 +56,7 @@
 						</div>
 					</div>
 					<div class="form-row">
-						<div class="form-group col-md-4">
+						<div class="form-group col-md-6">
 							<label for="capital">Modal</label>
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
@@ -70,7 +70,7 @@
 								@enderror
 							</div>
 						</div>
-						<div class="form-group col-md-4">
+						<div class="form-group col-md-6">
 							<label for="price">Harga</label>
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
@@ -84,52 +84,86 @@
 								@enderror
 							</div>
 						</div>
-						<div class="form-group col-md-4">
-							<label for="size">Ukuran</label>
-							<select name="size[]" id="size" class="is_select2 w-100 @error('size') is-invalid @enderror" multiple data-placeholder="Ukuran">
-								@foreach ($sizes as $size)
-									<option @selected(old('size') === $size) value="{{ $size }}">{{ $size }}</option>
-								@endforeach
-							</select>
-							@error('size')
-								<div class="invalid-feedback">
-									{{ $message }}
-								</div>
-							@enderror
-						</div>
 					</div>
-					<div class="form-row">
-						<div class="form-group col-md-4">
-							<label for="incoming">Barang Masuk</label>
-							<div class="d-flex flex-column" style="{{ $errors->has('incoming.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
-								<input type="number" name="incoming[]" class="form-control @error('incoming.0') is-invalid @enderror" id="incoming1" placeholder="Barang Masuk" aria-labelledby="incoming" value="{{ old('incoming.0') }}" min="1" />
-								@error('incoming.0')
-									<div class="invalid-feedback mt-0">
-										{{ $message }}
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-row">
+								<div class="form-group col-md-5">
+									<label for="incoming">Barang Masuk</label>
+									<div class="d-flex flex-column" style="{{ $errors->has('incoming.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
+										<input type="number" name="incoming[]" class="form-control @error('incoming.0') is-invalid @enderror" id="incoming1" placeholder="Barang Masuk" aria-labelledby="incoming" value="{{ old('incoming.0') }}" min="1" />
+										@error('incoming.0')
+											<div class="invalid-feedback mt-0">
+												{{ $message }}
+											</div>
+										@enderror
 									</div>
-								@enderror
+								</div>
+								<div class="form-group col-md-5">
+									<label for="outgoing">Barang Keluar</label>
+									<div id="outgoingWrapper" class="d-flex flex-column" style="{{ $errors->has('outgoing.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
+										<input type="number" name="outgoing[]" class="form-control @error('outgoing.0') is-invalid @enderror" id="outgoing1" placeholder="Barang Keluar" aria-labelledby="outgoing" value="{{ old('outgoing.0') ?? 0 }}" min="0" />
+										@error('outgoing.0')
+											<div class="invalid-feedback mt-0">
+												{{ $message }}
+											</div>
+										@enderror
+									</div>
+								</div>
+								<div class="form-group col-md-2">
+									<div class="d-flex" style="column-gap: 0.5rem; margin-top: 2rem">
+										<input type="hidden" value="1" id="totalInput" />
+										<button class="btn btn-success" type="button" id="addInputBtn" title="Tambah Input">
+											<i class="fa fa-plus"></i>
+										</button>
+										<button class="btn btn-danger" type="button" id="removeInputBtn" title="Hapus Input">
+											<i class="fa fa-minus"></i>
+										</button>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div class="form-group col-md-4">
-							<label for="outgoing">Barang Keluar</label>
-							<div id="outgoingWrapper" class="d-flex flex-column" style="{{ $errors->has('outgoing.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
-								<input type="number" name="outgoing[]" class="form-control @error('outgoing.0') is-invalid @enderror" id="outgoing1" placeholder="Barang Keluar" aria-labelledby="outgoing" value="{{ old('outgoing.0') ?? 0 }}" min="0" />
-								@error('outgoing.0')
-									<div class="invalid-feedback mt-0">
-										{{ $message }}
+						<div class="col-md-6">
+							<div class="form-row">
+								<div class="form-group col-md-5">
+									<label for="size">Ukuran</label>
+									<div class="d-flex flex-column" style="{{ $errors->has('size.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
+										<select name="size[]" id="size1" class="is_select2 w-100 @error('size.0') is-invalid @enderror" data-placeholder="Ukuran">
+											@foreach ($sizes as $size)
+												<option @selected(old('size') === $size) value="{{ $size }}">{{ $size }}</option>
+											@endforeach
+										</select>
+										@error('size.0')
+											<div class="invalid-feedback">
+												{{ $message }}
+											</div>
+										@enderror
 									</div>
-								@enderror
-							</div>
-						</div>
-						<div class="form-group col-md-2">
-							<div class="d-flex" style="column-gap: 0.5rem; margin-top: 2rem">
-								<input type="hidden" value="1" id="totalInput" />
-								<button class="btn btn-success" type="button" id="addInputBtn" title="Tambah Input">
-									<i class="fa fa-plus"></i>
-								</button>
-								<button class="btn btn-danger" type="button" id="removeInputBtn" title="Hapus Input">
-									<i class="fa fa-minus"></i>
-								</button>
+								</div>
+								<div class="form-group col-md-5">
+									<label for="amount">Jumlah</label>
+									<div class="d-flex flex-column" style="{{ $errors->has('amount.*') ? 'row-gap: 0.25rem;' : 'row-gap: 0.5rem;' }}">
+										<input type="number" name="amount[]" class="form-control @error('amount.0') is-invalid @enderror" id="amount1" placeholder="Jumlah Pcs" value="{{ old('amount.0') }}" />
+										@error('amount.0')
+											<div class="invalid-feedback">
+												{{ $message }}
+											</div>
+										@enderror
+									</div>
+								</div>
+								<div class="form-group col-md-2">
+									<div class="d-flex" style="column-gap: 0.5rem; margin-top: 2rem">
+										<input type="hidden" value="1" id="totalInputSize" />
+										<input type="hidden" value="{{ base64_encode(json_encode($sizes)) }}" id="sizes" />
+										<input type="hidden" value="{{ base64_encode(json_encode([])) }}" id="currentSizes" />
+										<button class="btn btn-success" type="button" id="addInputSizeBtn" title="Tambah Input">
+											<i class="fa fa-plus"></i>
+										</button>
+										<button class="btn btn-danger" type="button" id="removeInputSizeBtn" title="Hapus Input">
+											<i class="fa fa-minus"></i>
+										</button>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -193,6 +227,40 @@
 			}
 
 			init();
+		});
+
+		const sizes = JSON.parse(atob($('#sizes').val()));
+		const currentSizes = JSON.parse(atob($('#currentSizes').val()));
+
+		console.log(currentSizes);
+
+		let optionSizes = [];
+		for (let i = 1; i < sizes.length; i++) {
+			const size = sizes[i];
+
+			optionSizes.push(`<option selected="{{ old('size.${i}') }}" value="${size}">${size}</option>`);
+		}
+
+		$('#addInputSizeBtn').on('click', () => {
+			const duplicates = sizes.filter((v) => currentSizes.some((e) => e === v));
+			let totalInputSize = parseInt($('#totalInputSize').val());
+			const sizeInput = `<select name="size[]" id="size${totalInputSize + 1}" class="is_select2 w-100 @error('size.${totalInputSize}') is-invalid @enderror" data-placeholder="Ukuran" aria-labelledby="size">${optionSizes.join('\n')}</select>`;
+			const amountInput = `<input type="number" name="amount[]" class="form-control @error('amount.${totalInputSize}') is-invalid @enderror" id="amount${totalInputSize + 1}" aria-labelledby="amount" placeholder="Barang Keluar" value="{{ old('amount.${totalInput}') }}" min="0" />`;
+
+			$(sizeInput).insertAfter(`#size${totalInputSize}`);
+			$(amountInput).insertAfter(`#amount${totalInputSize}`);
+			$('#totalInputSize').val(totalInputSize + 1);
+			$('#currentSizes').val(JSON.stringify(btoa(['M'])));
+		});
+
+		$('#removeInputSizeBtn').on('click', () => {
+			let totalInputSize = parseInt($('#totalInputSize').val());
+
+			if (totalInputSize > 1) {
+				$(`#size${totalInputSize}`).remove();
+				$(`#amount${totalInputSize}`).remove();
+				$('#totalInputSize').val(totalInputSize - 1);
+			}
 		});
 	</script>
 @endpush

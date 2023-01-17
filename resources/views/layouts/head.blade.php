@@ -8,7 +8,10 @@
   <link rel="stylesheet" href="{{ asset('assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}" />
   <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}" />
   <link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}" />
-	<link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" />
+	<script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
+	<script src="{{ asset('assets/plugins/select2/js/select2.full.min.js') }}"></script>
+	<script src="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
   <style>
     .select2-container .select2-selection--single {
       height: 36px !important;

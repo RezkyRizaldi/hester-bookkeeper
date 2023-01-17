@@ -15,26 +15,27 @@ use Illuminate\Http\RedirectResponse;
 
 class ProductController extends Controller
 {
-    private Brand $brand;
-    private Color $color;
-    private Goods $goods;
-    private Product $product;
-    private ProductService $productService;
     private array $sizes;
 
-    public function __construct(Brand $brand, Color $color, Goods $goods, Product $product, ProductService $productService)
+    public function __construct(
+        private Brand $brand,
+        private Color $color,
+        private Goods $goods,
+        private Product $product,
+        private ProductService $productService,
+    )
     {
         $this->brand = $brand;
         $this->color = $color;
         $this->goods = $goods;
         $this->product = $product;
         $this->productService = $productService;
-        $this->sizes = ['S', 'M', 'L', 'XL'];
+        $this->sizes = ['S', 'M', 'L', 'XL', 'Semua Ukuran'];
     }
 
     public function index(): View|Factory
     {
-        $products = $this->product->with(['brand', 'color'])->latest()->paginate(10);
+        $products = $this->product->with(['brand', 'color', 'size'])->latest()->paginate(10);
 
         return view('product.index', compact('products'));
     }
@@ -56,7 +57,6 @@ class ProductController extends Controller
     public function show(Product $product): View|Factory
     {
         $goods = $this->goods
-            ->withTrashed()
             ->where('product_id', $product->id)
             ->get()
             ->groupBy(fn (Goods $query) => Carbon::parse($query->created_at)->translatedFormat('F'));
