@@ -30,6 +30,7 @@ class IncomeController extends Controller
     {
         $incomes = $this->income
             ->with(['product', 'store'])
+            ->search(request('search'))
             ->get()
             ->groupBy(fn (Income $query) => Carbon::parse($query->date)->translatedFormat('F'));
 

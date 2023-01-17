@@ -34,7 +34,12 @@ class ProductController extends Controller
 
     public function index(): View|Factory
     {
-        $products = $this->product->with(['brand', 'color', 'sizes'])->latest()->paginate(10);
+        $products = $this->product
+            ->with(['brand', 'color', 'sizes'])
+            ->latest()
+            ->search(request('search'))
+            ->paginate(10)
+            ->appends(['search' => request('search')]);
 
         return view('product.index', compact('products'));
     }

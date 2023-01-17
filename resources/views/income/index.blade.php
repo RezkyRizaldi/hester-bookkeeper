@@ -12,7 +12,21 @@
 				<div class="col-12">
 					<div class="card">
 						<div class="card-header">
-							<a href="{{ route('incomes.create') }}" class="btn btn-primary float-right"><i class="nav-icon fa fa-plus"></i>  Tambah Data Pemasukan</a>
+							<div class="row">
+								<div class="col-md-4">
+									<form action="{{ route('incomes.index') }}" class="input-group">
+										<input type="search" name="search" class="form-control" placeholder="Cari..." aria-label="Cari" aria-describedby="searchBtn" value="{{ request('search') }}" />
+										<div class="input-group-append">
+											<button class="btn btn-primary" type="submit" id="searchBtn">
+												<i class="fa fa-search"></i>
+											</button>
+										</div>
+									</form>
+								</div>
+								<div class="col-md-8">
+									<a href="{{ route('incomes.create') }}" class="btn btn-primary float-right"><i class="nav-icon fa fa-plus"></i>  Tambah Data Pemasukan</a>
+								</div>
+							</div>
 						</div>
 						<div class="card-body">
 							<table class="table text-center table-bordered table-hover">

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -38,6 +39,12 @@ class Product extends Model
         return new Attribute(
             get: fn () => explode(',', $this->size),
         );
+    }
+
+    public function scopeSearch(Builder $query, ?string $request): Builder
+    {
+        return $query->when($request, fn (Builder $query) => $query->where('name', 'like', "%$request%")
+            ->orWhereHas('brand', fn (Builder $query) => $query->where('name', 'like', "%$request%")));
     }
 
     public function brand(): BelongsTo

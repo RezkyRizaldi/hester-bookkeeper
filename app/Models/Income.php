@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -53,6 +54,12 @@ class Income extends Model
         return new Attribute(
             get: fn () => Carbon::parse($this->date)->format('Y-m-d'),
         );
+    }
+
+    public function scopeSearch(Builder $query, ?string $request): Builder
+    {
+        return $query->when($request, fn (Builder $query) => $query->whereHas('product', fn (Builder $query) => $query->where('name', 'like', "%$request%"))
+            ->orWhereHas('store', fn (Builder $query) => $query->where('name', 'like', "%$request%")));
     }
 
     public function product(): BelongsTo

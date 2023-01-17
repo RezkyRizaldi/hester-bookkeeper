@@ -27,6 +27,7 @@ class ExpenditureController extends Controller
     {
         $expenditures = $this->expenditure
             ->with(['product'])
+            ->search(request('search'))
             ->get()
             ->groupBy(fn (Expenditure $query) => Carbon::parse($query->date)->translatedFormat('F'));
 
