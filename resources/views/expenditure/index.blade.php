@@ -29,7 +29,7 @@
 							</div>
 						</div>
 						<div class="card-body">
-							<table class="table text-center table-bordered table-hover">
+							<table class="table table-responsive text-center table-bordered table-hover">
 								<thead class="thead-dark">
 									<tr>
 										@if ($expenditures->isNotEmpty())

@@ -47,6 +47,17 @@ class Product extends Model
             ->orWhereHas('brand', fn (Builder $query) => $query->where('name', 'like', "%$request%")));
     }
 
+    public function scopeSort(Builder $query, ?string $request): Builder
+    {
+        if ($request === 'asc') {
+            return $query->whereHas('brand', fn (Builder $query) => $query->latest('name'));
+        } else if ($request === 'desc') {
+            return $query->whereHas('brand', fn (Builder $query) => $query->oldest('name'));
+        } else {
+            return $query;
+        }
+    }
+
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);

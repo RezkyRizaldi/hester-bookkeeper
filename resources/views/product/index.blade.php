@@ -29,13 +29,31 @@
 							</div>
 						</div>
 						<div class="card-body">
-							<table class="table text-center table-bordered table-hover">
+							<table class="table table-responsive text-center table-bordered table-hover">
 								<thead class="thead-dark">
 									<tr>
 										<th>No.</th>
 										<th>Merek</th>
 										<th>Kode Produk</th>
-										<th>Nama Produk</th>
+										<th>
+											<div class="d-flex align-items-center justify-content-around">
+												<span>Nama Produk</span>
+												<div class="d-flex flex-column justify-content-center">
+													<form action="{{ route('products.index') }}">
+														<input type="hidden" name="sort" value="asc" />
+														<button class="btn p-0 m-0 bg-transparent text-white">
+															<i class="fa fa-caret-up"></i>
+														</button>
+													</form>
+													<form action="{{ route('products.index') }}">
+														<input type="hidden" name="sort" value="desc" />
+														<button class="btn p-0 m-0 bg-transparent text-white">
+															<i class="fa fa-caret-down"></i>
+														</button>
+													</form>
+												</div>
+											</div>
+										</th>
 										<th>Modal</th>
 										<th>Harga</th>
 										<th>Ukuran</th>

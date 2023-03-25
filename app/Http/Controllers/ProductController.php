@@ -36,8 +36,8 @@ class ProductController extends Controller
     {
         $products = $this->product
             ->with(['brand', 'color', 'sizes'])
-            ->latest()
             ->search(request('search'))
+            ->sort(request('sort'))
             ->paginate(10)
             ->appends(['search' => request('search')]);
 
