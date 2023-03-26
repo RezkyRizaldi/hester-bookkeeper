@@ -29,7 +29,7 @@
 							</div>
 						</div>
 						<div class="card-body">
-							<table class="table text-center table-responsive table-bordered table-hover">
+							<table class="table text-center table-bordered table-hover">
 								<thead class="thead-dark">
 									<tr>
 										@if ($incomes->isNotEmpty())
@@ -104,3 +104,12 @@
 		</div>
 	</section>
 @endsection
+@push('scripts')
+	<script type="text/javascript">
+		if (window.matchMedia('(max-width: 500px)').matches) {
+			$('.table').addClass('table-responsive');
+		} else {
+			$('.table').removeClass('table-responsive');
+		}
+	</script>
+@endpush
