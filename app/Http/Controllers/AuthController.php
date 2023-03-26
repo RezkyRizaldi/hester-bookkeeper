@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AuthRequest;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -15,14 +16,9 @@ class AuthController extends Controller
         return view('login');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(AuthRequest $request): RedirectResponse
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email:dns'],
-            'password' => ['required'],
-        ]);
-
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($request->validated())) {
             $request->session()->regenerate();
 
             return redirect()->intended();
@@ -31,7 +27,7 @@ class AuthController extends Controller
         return back()->with('error', 'Login gagal.');
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request): RedirectResponse
     {
         Auth::logout();
 

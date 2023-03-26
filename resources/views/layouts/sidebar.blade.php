@@ -15,7 +15,7 @@
 		<nav class="mt-2">
 			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 				<li class="nav-item">
-					<a href="{{ route('brand') }}" class="nav-link {{ (request()->is('brands*')) ? 'active' : '' }}">
+					<a href="{{ route('brands.index') }}" class="nav-link {{ (request()->is('brands*')) ? 'active' : '' }}">
 						<i class="nav-icon fas fa-copyright text-white"></i>
 						<p>Merek</p>
 					</a>

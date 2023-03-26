@@ -28,8 +28,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
     Route::get('/', HomeController::class)->name('dashboard');
-    Route::get('/brands', BrandController::class)->name('brand');
     Route::get('/stores', StoreController::class)->name('store');
+    Route::resource('brands', BrandController::class)->except(['show']);
     Route::resource('products', ProductController::class);
     Route::resource('colors', ColorController::class)->except(['show']);
     Route::resource('incomes', IncomeController::class)->except(['show']);
