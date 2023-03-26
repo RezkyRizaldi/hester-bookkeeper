@@ -13,7 +13,7 @@
 					<div class="card">
 						<div class="card-header">
 							<div class="row">
-								<div class="col-md-4">
+								<div class="col-md-4 mb-3 mb-md-0">
 									<form action="{{ route('expenditures.index') }}" class="input-group">
 										<input type="search" name="search" class="form-control" placeholder="Cari..." aria-label="Cari" aria-describedby="searchBtn" value="{{ request('search') }}" />
 										<div class="input-group-append">

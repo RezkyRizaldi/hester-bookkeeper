@@ -57,3 +57,12 @@
 		</div>
 	</section>
 @endsection
+@push('scripts')
+	<script type="text/javascript">
+		if (window.matchMedia('(max-width: 500px)').matches) {
+			$('.table').addClass('table-responsive');
+		} else {
+			$('.table').removeClass('table-responsive');
+		}
+	</script>
+@endpush
