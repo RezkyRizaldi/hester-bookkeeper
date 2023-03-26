@@ -51,7 +51,7 @@ class Product extends Model
     {
         if ($request === 'asc') {
             return $query->whereHas('brand', fn (Builder $query) => $query->latest('name'));
-        } else if ($request === 'desc') {
+        } elseif ($request === 'desc') {
             return $query->whereHas('brand', fn (Builder $query) => $query->oldest('name'));
         } else {
             return $query;

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\ExpenditureController;
@@ -20,10 +21,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', HomeController::class)->name('dashboard');
-Route::get('/brands', BrandController::class)->name('brand');
-Route::get('/stores', StoreController::class)->name('store');
-Route::resource('products', ProductController::class);
-Route::resource('colors', ColorController::class)->except(['show']);
-Route::resource('incomes', IncomeController::class)->except(['show']);
-Route::resource('expenditures', ExpenditureController::class)->except(['show']);
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'index'])->name('login');
+    Route::post('/login', [AuthController::class, 'store'])->name('authenticate');
+});
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
+    Route::get('/', HomeController::class)->name('dashboard');
+    Route::get('/brands', BrandController::class)->name('brand');
+    Route::get('/stores', StoreController::class)->name('store');
+    Route::resource('products', ProductController::class);
+    Route::resource('colors', ColorController::class)->except(['show']);
+    Route::resource('incomes', IncomeController::class)->except(['show']);
+    Route::resource('expenditures', ExpenditureController::class)->except(['show']);
+});
