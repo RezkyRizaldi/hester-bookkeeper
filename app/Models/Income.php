@@ -38,7 +38,7 @@ class Income extends Model
     protected function profit(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->amount - $this->product->capital,
+            get: fn () => $this->product->capital - $this->amount,
         );
     }
 
